@@ -30,7 +30,9 @@ parser.add_argument("--n_epochs", type=int, default=200,
 parser.add_argument("--batch_size", type=int, default=8,
                     help="size of the batches")
 parser.add_argument("--dataset_name", type=str,
-                    default="img_align_celeba", help="name of the dataset")
+                    default="train", help="name of the dataset")
+parser.add_argument("--test_dataset_name", type=str,
+                    default="test", help="name of the dataset to test")
 parser.add_argument("--lr", type=float, default=0.0002,
                     help="adam: learning rate")
 parser.add_argument("--b1", type=float, default=0.5,
@@ -47,10 +49,17 @@ parser.add_argument("--mask_size", type=int, default=32,
                     help="size of random mask")
 parser.add_argument("--channels", type=int, default=3,
                     help="number of image channels")
-parser.add_argument("--sample_interval", type=int, default=500,
+parser.add_argument("--sample_interval", type=int, default=2000,
                     help="interval between image sampling")
+parser.add_argument("--saving_interval", type=int, default=10,
+                    help="interval of epoch between model are saved")
+parser.add_argument("--save_path", type=str,
+                    default="models", help="Path where best models will be saved")
+parser.add_argument("--load_models", type=int, default=None,
+                    help="To load generator and discriminator number n from save path")
 opt = parser.parse_args()
 print(opt)
+
 
 cuda = True if torch.cuda.is_available() else False
 
@@ -58,6 +67,7 @@ input_shape = (opt.channels, opt.img_size, opt.img_size)
 
 # Loss function
 adversarial_loss = torch.nn.MSELoss()
+
 
 # Initialize generator and discriminator
 generator = Generator(input_shape)
@@ -68,9 +78,37 @@ if cuda:
     discriminator.cuda()
     adversarial_loss.cuda()
 
+
+def weights_init_normal(m):
+    classname = m.__class__.__name__
+    if classname.find("Conv") != -1:
+        torch.nn.init.normal_(m.weight.data, 0.0, 0.02)
+    elif classname.find("BatchNorm2d") != -1:
+        torch.nn.init.normal_(m.weight.data, 1.0, 0.02)
+        torch.nn.init.constant_(m.bias.data, 0.0)
+
 # Initialize weights
 generator.apply(weights_init_normal)
 discriminator.apply(weights_init_normal)
+# Optimizers
+optimizer_G = torch.optim.Adam(
+generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
+optimizer_D = torch.optim.Adam(
+discriminator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
+
+# ---------------------
+#  Load models
+# ---------------------
+
+if (opt.load_models is not None):
+    if (os.path.isfile("%s/ccgan_generator-%s.pth" % (opt.save_path, opt.load_models))):
+        generator = torch.load("%s/ccgan_generator-%s.pth" % (opt.save_path, opt.load_models))
+    else:
+        print("No such file as %s/ccgan_generator-%s.pth, can't load generator" % (opt.save_path, opt.load_models))
+    if (os.path.isfile("%s/ccgan_discriminator-%s.pth" % (opt.save_path, opt.load_models))):
+        discriminator = torch.load("%s/ccgan_discriminator-%s.pth" % (opt.save_path, opt.load_models))
+    else:
+        print("No such file as %s/ccgan_disciminator-%s.pth, can't load discriminator" % (opt.save_path, opt.load_models))
 
 # Dataset loader
 transforms_ = [
@@ -83,7 +121,7 @@ transforms_lr = [
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
-dataloader = DataLoader(
+train_loader = DataLoader(
     ImageDataset("../../data/%s" % opt.dataset_name,
                  transforms_x=transforms_, transforms_lr=transforms_lr),
     batch_size=opt.batch_size,
@@ -91,11 +129,15 @@ dataloader = DataLoader(
     num_workers=opt.n_cpu,
 )
 
-# Optimizers
-optimizer_G = torch.optim.Adam(
-    generator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
-optimizer_D = torch.optim.Adam(
-    discriminator.parameters(), lr=opt.lr, betas=(opt.b1, opt.b2))
+test_loader = DataLoader(
+    ImageDataset("../../data/%s" % opt.test_dataset_name,
+                 transforms_x=transforms_, transforms_lr=transforms_lr, mode='test'),
+    batch_size=opt.batch_size,
+    shuffle=True,
+    num_workers=opt.n_cpu,
+)
+
+
 
 Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
@@ -123,7 +165,7 @@ def save_sample(saved_samples):
 
 saved_samples = {}
 for epoch in range(opt.n_epochs):
-    for i, batch in enumerate(dataloader):
+    for i, batch in enumerate(train_loader):
         imgs = batch["x"]
         imgs_lr = batch["x_lr"]
 
@@ -175,8 +217,9 @@ for epoch in range(opt.n_epochs):
 
         print(
             "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
-            % (epoch, opt.n_epochs, i, len(dataloader), d_loss.item(), g_loss.item())
+            % (epoch, opt.n_epochs, i, len(train_loader), d_loss.item(), g_loss.item())
         )
+
 
         # Save first ten samples
         if not saved_samples:
@@ -191,6 +234,9 @@ for epoch in range(opt.n_epochs):
             saved_samples["lowres"] = torch.cat(
                 (saved_samples["lowres"], imgs_lr[:1]), 0)
 
-        batches_done = epoch * len(dataloader) + i
+        batches_done = epoch * len(train_loader) + i
         if batches_done % opt.sample_interval == 0:
             save_sample(saved_samples)
+        if opt.save_path and epoch % opt.saving_interval == 0 and batches_done % opt.sample_interval == 0:
+            torch.save(generator, "%s/ccgan_generator-%s.pth" % (opt.save_path, epoch))
+            torch.save(discriminator, "%s/ccgan_discriminator-%s.pth" % (opt.save_path, epoch))
