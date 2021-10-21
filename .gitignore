@@ -1,3 +1,5 @@
-.ipynb_checkspoints/
+*/.ipynb_checkspoints
 input/*
 MaskTheFace
+data/*
+mask_segmentation/data/*
