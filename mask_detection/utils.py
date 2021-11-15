@@ -69,6 +69,7 @@ def display_result(locations, predictions, frame):
 		cv2.putText(frame, label, (startX, startY - 10),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
 		cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+	return frame
 
 def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 	# grab the dimensions of the frame and then construct a blob
@@ -87,6 +88,7 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 	faces = []
 	locs = []
 	preds = []
+	# print('default_confidence ' + str(default_confidence))
 
 	# loop over the detections
 	for i in range(0, detections.shape[2]):
@@ -103,6 +105,8 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 
 			# ensure the bounding boxes fall within the dimensions of
 			# the frame
+			if (startX> w or endX> w or startY >h or endY >h):
+				continue
 			(startX, startY) = (max(0, startX), max(0, startY))
 			(endX, endY) = (min(w - 1, endX), min(h - 1, endY))
 
@@ -112,16 +116,20 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 
 			# pass the face through the model to determine if the face
 			# has a mask or not
+			# print('detection_confidence ' + str(detection_confidence))
+			# print('face: ' + str((startY,endY, startX,endX)))
+			# print('h, w: ' + str((h, w)))
 			predictions = predict(face, maskModel)
 			_, pred = torch.max(predictions.data, 1)
 
 				# add the face and bounding boxes to their respective
 				# lists
-			if (pred):
+			# print('pred: ' + str(pred))
+			if (pred == 0):
 				faces.append(face)
 				preds.append(pred)
 				locs.append((startX, startY, endX, endY))
-
+			
 	# return a 2-tuple of the face locations and their corresponding
 	# locations
 	return (faces, locs, preds)

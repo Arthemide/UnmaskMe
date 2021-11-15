@@ -49,7 +49,7 @@ while True:
 	# face mask or not
 	(faces, locs, preds) = utils.detect_and_predict_mask(frame, faceNet, maskModel, args["confidence"])
 	
-	# Adrien function inputs: faces
+	# Adrien function inputs: faces = all faces with a mask
 	
 	utils.display_result(locs, preds, frame)
 
