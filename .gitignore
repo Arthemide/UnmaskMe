@@ -7,3 +7,8 @@ data
 mask_detection/.ipynb_checkpoints
 
 mask_detection/mask_dataset
+*/.ipynb_checkspoints
+input/*
+MaskTheFace
+data/*
+mask_segmentation/data/*
