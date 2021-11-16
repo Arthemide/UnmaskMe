@@ -3,7 +3,7 @@ dl==0.1.0
 imutils==0.5.4
 matplotlib==3.4.2
 numpy==1.19.5
-opencv-python-4.5.4.58
+opencv-python==4.5.4.58
 streamlit==1.2.0
 streamlit_webrtc==0.31.2
 torch==1.10.0
