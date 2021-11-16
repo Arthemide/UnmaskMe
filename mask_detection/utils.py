@@ -4,15 +4,14 @@ import os
 import torch
 from torchvision import transforms
 
-import model
+from mask_detection import model as mask_model
 
 # Helper libraries
-import argparse
 import cv2
 
 import numpy as np
 
-output_path = 'mask_detector/'
+output_path = 'mask_detection/mask_detector/'
 
 def predict(image, model):
     # define preprocess transforms
@@ -42,7 +41,7 @@ def load_models(device, faceModelPath):
 	# load the face mask detector model from disk
 	print("[INFO] loading face mask detector model...")
 	# initialize the model and load the trained weights
-	maskModel = model.FaceMaskDetectorModel().to(device)
+	maskModel = mask_model.FaceMaskDetectorModel().to(device)
 	# model.load_model(output_path+'model.pth')
 	checkpoint = torch.load(output_path+'model.pth', map_location=device)
 	maskModel.load_state_dict(checkpoint['model_state_dict'])

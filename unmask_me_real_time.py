@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 # Principal packages
 import torch
-from torchvision import transforms
 from imutils.video import VideoStream
 import numpy as np
 import argparse
 import imutils
 import time
 import cv2
-import os
 from mask_detection import utils as mask_utils
 
 output_path = 'mask_detector/'
@@ -20,9 +18,6 @@ if __name__ == "__main__":
 
 	# construct the argument parser and parse the arguments
 	ap = argparse.ArgumentParser()
-	ap.add_argument("-f", "--face", type=str,
-		default="face_detector",
-		help="path to face detector model directory")
 	ap.add_argument("-m", "--model", type=str,
 		default="mask_detector.model",
 		help="path to trained face mask detector model")
@@ -31,7 +26,7 @@ if __name__ == "__main__":
   
 	args = vars(ap.parse_args())
 
-	maskModel, faceNet = mask_utils.load_models(device, args["face"])
+	maskModel, faceNet = mask_utils.load_models(device, 'mask_detection/face_detector')
 
 	# initialize the video stream and allow the camera sensor to warm up
 	print("[INFO] starting video stream...")

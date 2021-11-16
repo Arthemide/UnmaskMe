@@ -1,16 +1,12 @@
 # -*- coding: utf-8 -*-
 # Principal packages
-import os
 import torch
-from torchvision import transforms
 
 from mask_detection import utils as mask_utils
 
 # Helper libraries
 import argparse
 import cv2
-
-import numpy as np
 
 output_path = 'mask_detector/'
 
@@ -24,9 +20,6 @@ if __name__ == "__main__":
     # construct the argument parser and parse the arguments
     ap.add_argument("-i", "--image", type=str,
 	help="image path")
-    ap.add_argument("-f", "--face", type=str,
-		default="face_detector",
-		help="path to face detector model directory")
     ap.add_argument("-m", "--model", type=str,
 		default="mask_detector.model",
 		help="path to trained face mask detector model")
@@ -34,9 +27,9 @@ if __name__ == "__main__":
 		help="minimum probability to filter weak detections")
     args = vars(ap.parse_args())
 	
-    maskModel, faceNet = mask_utils.load_models(device, args["face"])
+    maskModel, faceNet = mask_utils.load_models(device, 'mask_detection/face_detector')
 
-    image = cv2.imread(args["input"])
+    image = cv2.imread(args["image"])
 
     (faces, locs, preds) =  mask_utils.detect_and_predict_mask(image, faceNet, maskModel, args["confidence"])
 
