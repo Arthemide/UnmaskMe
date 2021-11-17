@@ -53,5 +53,4 @@ class FaceMaskDetectorModel(nn.Module):
         )
 
     def load_model(self, path):
-        self.model.load_state_dict(
-            torch.load(path, map_location=torch.device("cpu")))
+        self.model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))

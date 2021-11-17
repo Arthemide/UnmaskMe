@@ -36,9 +36,7 @@ if __name__ == "__main__":
 
     args = vars(ap.parse_args())
 
-    maskModel, faceNet = mask_utils.load_models(
-        device,
-        "mask_detection/face_detector")
+    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
 
     # initialize the video stream and allow the camera sensor to warm up
     print("[INFO] starting video stream...")

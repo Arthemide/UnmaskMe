@@ -15,10 +15,7 @@ output_path = "mask_detection/mask_detector/"
 def predict(image, model):
     # define preprocess transforms
     transform = transforms.Compose(
-        [
-            transforms.ToPILImage(),
-            transforms.Resize(224),
-            transforms.ToTensor()]
+        [transforms.ToPILImage(), transforms.Resize(224), transforms.ToTensor()]
     )
 
     # convert to RGB format

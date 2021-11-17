@@ -58,11 +58,7 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss):
     # accuracy plots
     plt.figure(figsize=(10, 7))
     plt.plot(train_acc, color="green", linestyle="-", label="train accuracy")
-    plt.plot(
-        valid_acc,
-        color="blue",
-        linestyle="-",
-        label="validataion accuracy")
+    plt.plot(valid_acc, color="blue", linestyle="-", label="validataion accuracy")
     plt.xlabel("Epochs")
     plt.ylabel("Accuracy")
     plt.legend()
@@ -116,12 +112,12 @@ valid_dataset = datasets.ImageFolder(
 
 # Create data loader
 train_loader = DataLoader(
-    train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4,
-    pin_memory=True)
+    train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True
+)
 # validation data loaders
 valid_loader = DataLoader(
-    valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4,
-    pin_memory=True)
+    valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4, pin_memory=True
+)
 
 # Display image and label.
 train_features, train_labels = next(iter(train_loader))
@@ -206,8 +202,7 @@ print(model)
 # total parameters and trainable parameters
 total_params = sum(p.numel() for p in model.parameters())
 print(f"{total_params:,} total parameters.")
-total_trainable_params = sum(
-    p.numel() for p in model.parameters() if p.requires_grad)
+total_trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
 print(f"{total_trainable_params:,} training parameters.")
 
 # optimizer
@@ -283,22 +278,15 @@ train_acc, valid_acc = [], []
 # start the training
 for epoch in range(epochs):
     print(f"[INFO]: Epoch {epoch+1} of {epochs}")
-    train_epoch_loss, train_epoch_acc = train(
-        model,
-        train_loader,
-        optimizer,
-        criterion)
-    valid_epoch_loss, valid_epoch_acc = validate(
-        model,
-        valid_loader,
-        criterion)
+    train_epoch_loss, train_epoch_acc = train(model, train_loader, optimizer, criterion)
+    valid_epoch_loss, valid_epoch_acc = validate(model, valid_loader, criterion)
     train_loss.append(train_epoch_loss)
     valid_loss.append(valid_epoch_loss)
     train_acc.append(train_epoch_acc)
     valid_acc.append(valid_epoch_acc)
     print(
-        f"Training loss: {train_epoch_loss:.3f}, "
-        f"training acc:{train_epoch_acc:.3f}")
+        f"Training loss: {train_epoch_loss:.3f}, " f"training acc:{train_epoch_acc:.3f}"
+    )
     print(
         f"Validation loss: {valid_epoch_loss:.3f}, "
         f"validation acc: {valid_epoch_acc:.3f}"
@@ -375,5 +363,5 @@ print(f"GT: {gt_class}, pred: {pred_class}")
 cv2.imshow("Result", orig_image)
 cv2.waitKey(0)
 cv2.imwrite(
-    f"outputs/{gt_class}{args['input'].split('/')[-1].split('.')[0]}.png",
-    orig_image)
+    f"outputs/{gt_class}{args['input'].split('/')[-1].split('.')[0]}.png", orig_image
+)

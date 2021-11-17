@@ -34,9 +34,7 @@ if __name__ == "__main__":
     )
     args = vars(ap.parse_args())
 
-    maskModel, faceNet = mask_utils.load_models(
-        device,
-        "mask_detection/face_detector")
+    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
 
     image = cv2.imread(args["image"])
 

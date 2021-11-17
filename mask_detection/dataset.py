@@ -54,12 +54,12 @@ valid_dataset = datasets.ImageFolder(
 
 # Create data loader
 train_loader = DataLoader(
-    train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4,
-    pin_memory=True)
+    train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=4, pin_memory=True
+)
 # validation data loaders
 valid_loader = DataLoader(
-    valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4,
-    pin_memory=True)
+    valid_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=4, pin_memory=True
+)
 
 # Display image and label.
 # train_features, train_labels = next(iter(train_loader))
