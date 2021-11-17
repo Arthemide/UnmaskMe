@@ -6,13 +6,13 @@ All the dependencies and required libraries are included in the file [requiremen
 
 ## 🚀&nbsp; Installation
 
-1. Clone the repo
+1. Clone the repository
 
     ```bash
     git clone https://github.com/Arthemide/UnmaskMe.git
     ```
 
-2. Change your directory to the cloned repo
+2. Change your directory to the cloned repository
 
     ```bash
     cd UnmaskMe
