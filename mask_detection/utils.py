@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 # Principal packages
 import os
+
+import cv2
+import numpy as np
 import torch
 from torchvision import transforms
 
 from mask_detection import model as mask_model
-
-# Helper libraries
-import cv2
-
-import numpy as np
 
 output_path = 'mask_detection/mask_detector/'
 

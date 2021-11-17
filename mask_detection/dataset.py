@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 # Principal packages
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
-
-
-# Helper libraries
 import matplotlib.pyplot as plt
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
 
 # Commented out IPython magic to ensure Python compatibility.
 # Drive Loading

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 # Principal packages
+import argparse
+
+import cv2
 import torch
 
 from mask_detection import utils as mask_utils
-
-# Helper libraries
-import argparse
-import cv2
 
 output_path = 'mask_detector/'
 

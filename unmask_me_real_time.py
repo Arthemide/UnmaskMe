@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 # Principal packages
+import argparse
+import time
+
+import cv2
+import imutils
+import numpy as np
 import torch
 from imutils.video import VideoStream
-import numpy as np
-import argparse
-import imutils
-import time
-import cv2
+
 from mask_detection import utils as mask_utils
 
 output_path = 'mask_detector/'

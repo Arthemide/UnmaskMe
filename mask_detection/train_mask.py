@@ -7,28 +7,25 @@ Original file is located at
     https://colab.research.google.com/drive/13q_dz1PjC-aJCYr7b7qGFEX0-JYszsAU
 """
 
+import argparse
 import os
+import time
+
+import cv2
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torchvision.utils import make_grid
-
-import argparse
-import cv2
-
-# Helper libraries
-import time
-from tqdm.auto import tqdm
-
-import matplotlib.pyplot as plt
-import numpy as np
-
 # Commented out IPython magic to ensure Python compatibility.
 # Drive Loading
 from google.colab import drive
+from torch.utils.data import DataLoader
+from torchvision import datasets, transforms
+from torchvision.utils import make_grid
+from tqdm.auto import tqdm
+
 drive.mount('/gdrive')
 # %cd /gdrive
 drive_path = 'MyDrive/projet_inria/'
