@@ -13,3 +13,5 @@ input/*
 data/*
 mask_segmentation/data/*
 mask_segmentation/.ipynb_checkpoints
+dlib_models
+.idea
