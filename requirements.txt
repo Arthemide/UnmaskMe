@@ -4,6 +4,7 @@ os
 PIL
 math
 argparse
+pathlib
 numpy
 torch
 torchvision
