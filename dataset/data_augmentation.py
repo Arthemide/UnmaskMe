@@ -87,9 +87,7 @@ class MaskFace(object):
 class MaskedFaceDataset(Dataset):
     """Masked face dataset"""
 
-    def __init__(
-        self, root, mask_type=None, pre_transform=None, post_transform=None
-    ):
+    def __init__(self, root, mask_type=None, pre_transform=None, post_transform=None):
         """
         Args:
             root (str): Root directory of the dataset.
