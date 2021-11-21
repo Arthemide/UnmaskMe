@@ -35,6 +35,7 @@ def load_generator(filename, eval=True):
     else:
         return None
 
+
 transforms_ = [
     transforms.Resize((128, 128), Image.BICUBIC),
     transforms.ToTensor(),
@@ -46,20 +47,21 @@ transforms_lr = [
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
 
+
 def generate_face(generator, mask, masked, transforms_x=transforms_, transforms_lr=transforms_lr):
     generator.eval()
     white = Image.new("L", masked.size, 255)
     mask_applied = Image.composite(white, masked, mask)
 
     loader = DataLoader(UniqueDataset(image=mask_applied, transforms_x=transforms_, transforms_lr=transforms_lr),
-    batch_size=1)
+                        batch_size=1)
     for i, b in enumerate(loader):
         with torch.no_grad():
             img = generator(Variable(b['x']), Variable(b['x_lr']))
 
     pil_image = transforms.Compose({
-        transforms.Resize((masked.size[1], masked.size[0]))
-        ,transforms.Normalize((-0.5, -0.5, -0.5), (2, 2, 2))
+        transforms.Resize((masked.size[1], masked.size[0])), transforms.Normalize(
+            (-0.5, -0.5, -0.5), (2, 2, 2))
     })(img[0])
 
     pil_image = transforms.ToPILImage()(pil_image)

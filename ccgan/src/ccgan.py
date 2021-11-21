@@ -15,23 +15,32 @@ from utils import *
 
 import torch
 
-n_epochs = 200 #number of epochs of training
-batch_size = 8 #size of the batches
+# number of epochs of training
+n_epochs = 200
+# size of the batches
+batch_size = 8
+# adam: learning rate
+lr = 0.0002
+# adam: decay of first order momentum of gradient
+b1 = 0.5
+# adam: decay of first order momentum of gradient
+b2 = 0.999
+# number of cpu threads to use during batch generation
+n_cpu = 8
+# size of each image dimension
+img_size = 128
+# number of image channels
+channels = 3
+# interval between image sampling
+sample_interval = 10000
+# set to none or load nth model in load_model_path
+load_model_n = 110
+
 dataset_path = "../../data/train"
-lr = 0.0002 #adam: learning rate
-b1 = 0.5 #adam: decay of first order momentum of gradient
-b2 = 0.999 #adam: decay of first order momentum of gradient
-n_cpu = 8 #number of cpu threads to use during batch generation
-img_size = 128 #size of each image dimension
-channels = 3 #number of image channels
-sample_interval = 10000 #interval between image sampling
 load_model_path = "../../data/"
 save_model_path = "./models/"
 
 os.makedirs("images", exist_ok=True)
-
-load_model_n = 110
-
 os.makedirs(save_model_path, exist_ok=True)
 
 cuda = True if torch.cuda.is_available() else False
@@ -50,7 +59,6 @@ if cuda:
     generator.cuda()
     discriminator.cuda()
     adversarial_loss.cuda()
-
 
 
 # Initialize weights
@@ -185,7 +193,7 @@ for epoch in range(begin_epoch, n_epochs):
         batches_done = epoch * len(train_loader) + i
         if batches_done % sample_interval == 0:
             save_sample(generator, saved_samples, batches_done)
-    if save_model_path :
+    if save_model_path:
         print("Saving models")
         torch.save({
             'epoch': epoch,
@@ -194,7 +202,5 @@ for epoch in range(begin_epoch, n_epochs):
             'optimizer_D_state_dict': optimizer_D.state_dict(),
             'optimizer_G_state_dict': optimizer_G.state_dict(),
             'd_loss': d_loss,
-            'g_loss' : g_loss
+            'g_loss': g_loss
         }, "%s/ccgan-%s.pth" % (save_model_path, epoch))
-
-
