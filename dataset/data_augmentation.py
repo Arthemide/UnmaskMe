@@ -45,8 +45,11 @@ class MaskFace(object):
             image (cv2 image): Image to be masked.
 
         Returns:
-            cv2 image: Image with a mask.
+            cv2 image: the original image
+            cv2 image: the mask of the mask
+            cv2 image: the masked image
         """
+        original_image = image.copy()
         face_detector = dlib.get_frontal_face_detector()
         face_locations = face_detector(image, 1)
         predictor = dlib.shape_predictor(self.path_to_dlib_model)
@@ -71,7 +74,7 @@ class MaskFace(object):
             image = image_masked
             mask += mask_binary
 
-        return image, mask
+        return original_image, np.clip(mask, 0, 1), image
 
     def get_random_mask(self):
         """
