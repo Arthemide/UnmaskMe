@@ -85,7 +85,7 @@ class MaskedFaceDataset(Dataset):
     """Masked face dataset"""
 
     def __init__(
-        self, root, mask_type="random", pre_transform=None, post_transform=None
+        self, root, mask_type=None, pre_transform=None, post_transform=None
     ):
         """
         Args:
@@ -98,10 +98,9 @@ class MaskedFaceDataset(Dataset):
         """
         self.root = root
         self.image_list = os.listdir(root)
-        self.mask_type = mask_type
         self.pre_transform = pre_transform
         self.post_transform = post_transform
-        self.maskface = MaskFace()
+        self.maskface = MaskFace(self.mask_type)
 
     def __len__(self):
         return len(self.image_list)
@@ -126,7 +125,6 @@ class MaskedFaceDataset(Dataset):
 if __name__ == "__main__":
     dataset = MaskedFaceDataset(
         root="dataset/originals",
-        mask_type="random",
     )
     dataloader = DataLoader(dataset, batch_size=2, shuffle=True)
     for i, (image, mask) in enumerate(dataloader):
