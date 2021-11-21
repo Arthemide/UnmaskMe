@@ -2,7 +2,8 @@
 
 ## Context-Conditional GAN
 
-Source for the ccgan : https://github.com/eriklindernoren/PyTorch-GAN
+Sources for the ccgan : [here](https://github.com/eriklindernoren/PyTorch-GAN#context-conditional-gan)
+From the paper [Semi-supervised learning with context-conditional generative adversarial networks](https://arxiv.org/pdf/1611.06430.pdf) by Emily Denton, Sam Gross, Rob Fergus.
 
 ### Dataset
 
@@ -25,7 +26,3 @@ In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and 
 <code>$ pip install -r requirements.txt</code>
 </ol>
 </ol>
-
-### Run context encoder
-
-<code>$ python ccgan/src/ccgan.py</code>
