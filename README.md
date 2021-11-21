@@ -71,7 +71,7 @@ All the dependencies and required libraries are included in the file [requiremen
 - To detect face masks in an image type the following command:
 
 ```bash
-python3 unmask_me_image.py --image images/pic1.jpeg
+python3 unmask_me_image.py --image images/pic1.jpg
 ```
 
 - To detect face masks in real-time video streams type the following command:
