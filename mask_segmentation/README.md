@@ -14,10 +14,10 @@ to add covid mask on celeba dataset to create labels from the created picture.
 
 to create the labels we must compare the masked picture but because MasktheFace adapt the luminosity we cant juste compare pixel by pixel
 
-# inria unmaskme
+## inria unmaskme
 
 runned on kaggle a unet models to segmentate the mask
 
-# unet_tensorflow/pytorch
+## unet_tensorflow/pytorch
 
 useless for now
