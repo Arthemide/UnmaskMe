@@ -25,4 +25,10 @@ In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and 
 <ol>
 <code>$ pip install -r requirements.txt</code>
 </ol>
+<ol>
+<code>$ pip install -r requirements.txt</code>
+</ol>
+<ol>
+<code>$ python ccgan/src/ccgan.py</code>
+</ol>
 </ol>
