@@ -1,16 +1,18 @@
 import glob
 
-from torch.utils.data import Dataset
-from PIL import Image
 import torchvision.transforms as transforms
+from PIL import Image
+from torch.utils.data import Dataset
 
 
 class ImageDataset(Dataset):
-    def __init__(self, root, get_mask, transforms_x=None, transforms_lr=None, mode='train'):
+    def __init__(
+        self, root, get_mask, transforms_x=None, transforms_lr=None, mode='train'
+    ):
         self.transform_x = transforms.Compose(transforms_x)
         self.transform_lr = transforms.Compose(transforms_lr)
 
-        self.files = sorted(glob.glob('%s/*.*' % root))
+        self.files = sorted(glob.glob("%s/*.*" % root))
         self.get_mask = get_mask
 
     def __getitem__(self, index):
@@ -26,7 +28,7 @@ class ImageDataset(Dataset):
 
         m_x = self.transform_x(mask)
 
-        return {'x': x, 'x_lr': x_lr, 'm_x': m_x}
+        return {"x": x, "x_lr": x_lr, "m_x": m_x}
 
     def __len__(self):
         return len(self.files)
@@ -34,7 +36,7 @@ class ImageDataset(Dataset):
 
 # Dataset composed of only one image
 class UniqueDataset(Dataset):
-    def __init__(self, image, transforms_x=None, transforms_lr=None, mode='eval'):
+    def __init__(self, image, transforms_x=None, transforms_lr=None, mode="eval"):
         self.transform_x = transforms.Compose(transforms_x)
         self.transform_lr = transforms.Compose(transforms_lr)
 
@@ -44,7 +46,7 @@ class UniqueDataset(Dataset):
         x = self.transform_x(self.image)
         x_lr = self.transform_lr(self.image)
 
-        return {'x': x, 'x_lr': x_lr}
+        return {"x": x, "x_lr": x_lr}
 
     def __len__(self):
         return 1

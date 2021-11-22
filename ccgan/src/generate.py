@@ -8,6 +8,7 @@ from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 
+
 def load_generator(filename, eval=True, device=None):
     if os.path.isfile(filename):
         print("Loading model %s" % filename)

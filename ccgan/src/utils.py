@@ -1,8 +1,7 @@
+from pathlib import Path
 
 import torch
 from PIL import Image
-from pathlib import Path
-
 from torchvision.utils import save_image
 
 
@@ -35,5 +34,6 @@ def save_sample(generator, saved_samples, batches_done):
     gen_imgs = generator(saved_samples["masked"], saved_samples["lowres"])
     # Save sample
     sample = torch.cat(
-        (saved_samples["masked"].data, gen_imgs.data, saved_samples["imgs"].data), -2)
+        (saved_samples["masked"].data, gen_imgs.data, saved_samples["imgs"].data), -2
+    )
     save_image(sample, "images/%d.png" % batches_done, nrow=5, normalize=True)
