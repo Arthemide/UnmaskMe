@@ -1,5 +1,4 @@
 import torch.nn as nn
-import torch.nn.functional as F
 import torch
 
 ##############################
@@ -10,8 +9,7 @@ import torch
 class UNetDown(nn.Module):
     def __init__(self, in_size, out_size, normalize=True, dropout=0.0):
         super(UNetDown, self).__init__()
-        model = [nn.Conv2d(in_size, out_size, 4, stride=2,
-                           padding=1, bias=False)]
+        model = [nn.Conv2d(in_size, out_size, 4, stride=2, padding=1, bias=False)]
         if normalize:
             model.append(nn.BatchNorm2d(out_size, 0.8))
         model.append(nn.LeakyReLU(0.2))
@@ -28,8 +26,7 @@ class UNetUp(nn.Module):
     def __init__(self, in_size, out_size, dropout=0.0):
         super(UNetUp, self).__init__()
         model = [
-            nn.ConvTranspose2d(in_size, out_size, 4,
-                               stride=2, padding=1, bias=False),
+            nn.ConvTranspose2d(in_size, out_size, 4, stride=2, padding=1, bias=False),
             nn.BatchNorm2d(out_size, 0.8),
             nn.ReLU(inplace=True),
         ]
@@ -61,8 +58,11 @@ class Generator(nn.Module):
         self.up4 = UNetUp(512, 128)
         self.up5 = UNetUp(256 + channels, 64)
 
-        final = [nn.Upsample(scale_factor=2), nn.Conv2d(
-            128, channels, 3, 1, 1), nn.Tanh()]
+        final = [
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(128, channels, 3, 1, 1),
+            nn.Tanh(),
+        ]
         self.final = nn.Sequential(*final)
 
     def forward(self, x, x_lr):
@@ -102,9 +102,15 @@ class Discriminator(nn.Module):
 
         layers = []
         in_filters = channels
-        for out_filters, stride, normalize in [(64, 2, False), (128, 2, True), (256, 2, True), (512, 1, True)]:
-            layers.extend(discriminator_block(
-                in_filters, out_filters, stride, normalize))
+        for out_filters, stride, normalize in [
+            (64, 2, False),
+            (128, 2, True),
+            (256, 2, True),
+            (512, 1, True),
+        ]:
+            layers.extend(
+                discriminator_block(in_filters, out_filters, stride, normalize)
+            )
             in_filters = out_filters
 
         layers.append(nn.Conv2d(out_filters, 1, 3, 1, 1))
