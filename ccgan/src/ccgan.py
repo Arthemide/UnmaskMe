@@ -212,5 +212,5 @@ for epoch in range(begin_epoch, n_epochs):
                 "d_loss": d_loss,
                 "g_loss": g_loss,
             },
-            "%s/ccgan-%s.pth" % (save_model_path, epoch)
+            "%s/ccgan-%s.pth" % (save_model_path, epoch),
         )
