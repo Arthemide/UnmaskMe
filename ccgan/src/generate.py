@@ -15,10 +15,11 @@ from models import Generator
 from datasets import UniqueDataset
 
 
-def load_generator(filename, eval=True):
+def load_generator(filename, eval=True, device=None):
     if (os.path.isfile(filename)):
         print("Loading model %s" % filename)
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        if device is None:
+            device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         checkpoint = torch.load(filename, map_location=torch.device(device))
 
         generator = Generator((3, 128, 128))
