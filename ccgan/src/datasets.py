@@ -7,7 +7,7 @@ from torch.utils.data import Dataset
 
 class ImageDataset(Dataset):
     def __init__(
-        self, root, get_mask, transforms_x=None, transforms_lr=None, mode='train'
+        self, root, get_mask, transforms_x=None, transforms_lr=None, mode="train"
     ):
         self.transform_x = transforms.Compose(transforms_x)
         self.transform_lr = transforms.Compose(transforms_lr)

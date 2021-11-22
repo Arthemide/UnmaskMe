@@ -7,12 +7,11 @@ import os
 import torch
 import torchvision.transforms as transforms
 from datasets import ImageDataset
-from models import Generator, Discriminator
+from models import Discriminator, Generator
 from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from torchvision import datasets
-from utils import weights_init_normal, get_masked_face, save_sample
+from utils import get_masked_face, save_sample, weights_init_normal
 
 # number of epochs of training
 n_epochs = 200
@@ -112,7 +111,7 @@ train_loader = DataLoader(
         dataset_path,
         get_mask=get_masked_face,
         transforms_x=transforms_,
-        transforms_lr=transforms_lr
+        transforms_lr=transforms_lr,
     ),
     batch_size=batch_size,
     shuffle=True,
@@ -123,7 +122,7 @@ train_loader = DataLoader(
 Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
 
-saved_samples: dict() = {}
+saved_samples = {}
 for epoch in range(begin_epoch, n_epochs):
     for i, batch in enumerate(train_loader):
         imgs = batch["x"]
@@ -211,7 +210,7 @@ for epoch in range(begin_epoch, n_epochs):
                 "optimizer_D_state_dict": optimizer_D.state_dict(),
                 "optimizer_G_state_dict": optimizer_G.state_dict(),
                 "d_loss": d_loss,
-                "g_loss": g_loss
-            }
-            , "%s/ccgan-%s.pth" % (save_model_path, epoch)
+                "g_loss": g_loss,
+            },
+            "%s/ccgan-%s.pth" % (save_model_path, epoch)
         )
