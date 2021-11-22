@@ -13,3 +13,6 @@ MaskTheFace
 data/*
 mask_segmentation/data/*
 mask_segmentation/.ipynb_checkpoints
+
+ccgan/images/
+ccgan/models/
