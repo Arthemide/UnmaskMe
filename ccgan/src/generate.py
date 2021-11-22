@@ -1,22 +1,18 @@
 import os
-from PIL import Image
 
 import torch
-
 import torchvision.transforms as transforms
-import torchvision.transforms.functional as F
 from datasets import UniqueDataset
 from models import Generator
 from PIL import Image
 from torch.autograd import Variable
-
+from torch.utils.data import DataLoader
 
 def load_generator(filename, eval=True, device=None):
     if os.path.isfile(filename):
         print("Loading model %s" % filename)
         if device is None:
-            device = torch.device(
-                "cuda:0" if torch.cuda.is_available() else "cpu")
+            device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         checkpoint = torch.load(filename, map_location=torch.device(device))
 
         generator = Generator((3, 128, 128))
@@ -54,9 +50,11 @@ def generate_face(
     mask_applied = Image.composite(white, masked, mask)
 
     loader = DataLoader(
-        UniqueDataset(image=mask_applied, transforms_x=transforms_x,
-                      transforms_lr=transforms_lr),
-        batch_size=1)
+        UniqueDataset(
+            image=mask_applied, transforms_x=transforms_x, transforms_lr=transforms_lr
+        ),
+        batch_size=1,
+    )
     for i, b in enumerate(loader):
         with torch.no_grad():
             img = generator(Variable(b["x"]), Variable(b["x_lr"]))
@@ -64,7 +62,7 @@ def generate_face(
     pil_image = transforms.Compose(
         {
             transforms.Resize((masked.size[1], masked.size[0])),
-            transforms.Normalize((-0.5, -0.5, -0.5), (2, 2, 2))
+            transforms.Normalize((-0.5, -0.5, -0.5), (2, 2, 2)),
         }
     )(img[0])
 
