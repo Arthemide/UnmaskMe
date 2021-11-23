@@ -11,13 +11,11 @@ def predict(images, model):
     transform = transforms.Compose(
         [transforms.ToPILImage(), transforms.Resize((128, 128)),transforms.ToTensor()]
     )
-    # convert to RGB format
-    #image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    #image = transform(image)
+   
     preds = []
+    # apply transform and predict on image separatly
     for image in images:
         t_image = transform(image)
-    # add batch dimension
         t_image = torch.unsqueeze(t_image, 0)
         with torch.no_grad():
             pred = model(t_image)
