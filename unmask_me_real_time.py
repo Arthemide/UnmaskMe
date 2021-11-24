@@ -9,6 +9,7 @@ import torch
 from imutils.video import VideoStream
 
 from mask_detection import utils as mask_utils
+from mask_segmentation import utils as segmentation_utils
 
 output_path = "mask_detector/"
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     args = vars(ap.parse_args())
 
     maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
+    segmentation_model = segmentation_utils.load_models(device, "mask_segmentation/weigth.pth")
 
     # initialize the video stream and allow the camera sensor to warm up
     print("[INFO] starting video stream...")
@@ -56,7 +58,8 @@ if __name__ == "__main__":
             frame, faceNet, maskModel, args["confidence"]
         )
 
-        # Adrien function inputs: faces = all faces with a mask
+        # predict the mask of covfid mask
+        faces_mask = segmentation_utils.predict(faces,segmentation_model)
 
         mask_utils.display_result(locs, preds, frame)
 

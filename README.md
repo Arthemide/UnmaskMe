@@ -50,7 +50,7 @@ python3 unmask_me_image.py --image images/pic1.jpeg
 - To detect face masks in real-time video streams type the following command:
 
 ```bash
-python3 unmask_me_realtime.py 
+python3 unmask_me_real_time.py 
 ```
 
 ## Streamlit app

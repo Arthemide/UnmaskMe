@@ -6,6 +6,7 @@ import cv2
 import torch
 
 from mask_detection import utils as mask_utils
+from mask_segmentation import utils as segmentation_utils
 
 output_path = "mask_detector/"
 
@@ -35,6 +36,7 @@ if __name__ == "__main__":
     args = vars(ap.parse_args())
 
     maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
+    segmentation_model = segmentation_utils.load_models(device, "mask_segmentation/weigth.pth")
 
     image = cv2.imread(args["image"])
 
@@ -42,7 +44,8 @@ if __name__ == "__main__":
         image, faceNet, maskModel, args["confidence"]
     )
 
-    # Adrien function inputs: faces = all faces with a mask
+    # predict the mask of covfid mask
+    faces_mask = mask_utils.predict(faces,segmentation_model)
 
     mask_utils.display_result(locs, preds, image)
 
