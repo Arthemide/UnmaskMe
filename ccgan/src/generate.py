@@ -44,15 +44,18 @@ transforms_lr = [
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
 
+
 def cv2_to_PIL(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return Image.fromarray(img)
+
 
 def get_mask_applied(img, mask):
     img = cv2_to_PIL(img)
     mask = mask.resize(img.size)
     white = Image.new("L", img.size, 255)
     return Image.composite(white, img, mask)
+
 
 def get_np_result(image, mask, res, size):
     res = transforms.Compose(
@@ -87,7 +90,7 @@ def predict(
             images=images,
             masks=masks,
             transforms_x=transforms_x,
-            transforms_lr=transforms_lr
+            transforms_lr=transforms_lr,
         ),
         batch_size=1,
     )
