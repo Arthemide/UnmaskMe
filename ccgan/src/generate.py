@@ -55,7 +55,6 @@ def get_mask_applied(img, mask):
     return Image.composite(white, img, mask)
 
 def get_np_result(image, mask, res, size):
-    print(res.size())
     res = transforms.Compose(
         {
             transforms.Resize(size),
@@ -67,7 +66,6 @@ def get_np_result(image, mask, res, size):
     mask = mask.resize((size[1], size[0]))
 
     pil_image = Image.composite(res, cv2_to_PIL(image), mask)
-    pil_image.show()
     res = cv2.cvtColor(numpy.array(pil_image), cv2.COLOR_BGR2RGB)
 
     mask.close()
