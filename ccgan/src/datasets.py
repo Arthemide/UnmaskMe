@@ -34,7 +34,6 @@ class ImageDataset(Dataset):
         return len(self.files)
 
 
-
 class MaskDataset(Dataset):
     def __init__(
         self, apply, images, masks, transforms_x=None, transforms_lr=None, mode="train"
@@ -51,8 +50,7 @@ class MaskDataset(Dataset):
     def __getitem__(self, index):
 
         mask_applied = self.apply(
-            self.images[index % len(self.images)],
-            self.masks[index % len(self.masks)]
+            self.images[index % len(self.images)], self.masks[index % len(self.masks)]
         )
 
         x = self.transform_x(mask_applied)
@@ -80,4 +78,3 @@ class UniqueDataset(Dataset):
 
     def __len__(self):
         return 1
-

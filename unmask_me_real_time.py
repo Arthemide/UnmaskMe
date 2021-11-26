@@ -39,7 +39,9 @@ if __name__ == "__main__":
     args = vars(ap.parse_args())
 
     maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
-    segmentation_model = segmentation_utils.load_models(device, "mask_segmentation/weigth.pth")
+    segmentation_model = segmentation_utils.load_models(
+        device, "mask_segmentation/weigth.pth"
+    )
     generator_model = gan_utils.load_models("ccgan/models/ccgan-110.pth")
 
     # initialize the video stream and allow the camera sensor to warm up
@@ -62,13 +64,11 @@ if __name__ == "__main__":
 
         if len(faces) != 0:
             # segment the mask on faces
-            faces_mask = segmentation_utils.predict(faces,segmentation_model)
+            faces_mask = segmentation_utils.predict(faces, segmentation_model)
 
             # predict the face underneath the mask
             preds = gan_utils.predict(
-                generator=generator_model,
-                images=faces,
-                masks=faces_mask
+                generator=generator_model, images=faces, masks=faces_mask
             )
 
         mask_utils.display_result(locs, preds, frame)
