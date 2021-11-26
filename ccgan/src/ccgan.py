@@ -30,7 +30,7 @@ img_size = 128
 # number of image channels
 channels = 3
 # interval between image sampling
-sample_interval = 10
+sample_interval = 10000
 # set to none or load nth model in load_model_path
 load_model_n = 110
 

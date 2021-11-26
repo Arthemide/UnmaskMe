@@ -9,9 +9,13 @@ import torchvision.transforms.functional as TF
 def predict(images, model):
     # define preprocess transforms
     transform = transforms.Compose(
-        [transforms.ToPILImage(), transforms.Resize((128, 128)),transforms.ToTensor()]
+        [
+            transforms.ToPILImage(),
+            transforms.Resize((128, 128)),
+            transforms.ToTensor(),
+        ]
     )
-   
+
     preds = []
     # apply transform and predict on image separatly
     for image in images:
@@ -19,6 +23,7 @@ def predict(images, model):
         t_image = torch.unsqueeze(t_image, 0)
         with torch.no_grad():
             pred = model(t_image)
+        pred = transforms.ToPILImage(mode='L')(torch.squeeze(pred, 0))
         preds.append(pred)
     return preds
 

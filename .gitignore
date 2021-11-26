@@ -4,6 +4,8 @@ __pycache__
 data
 .vscode
 
+unmaskme-env/
+
 mask_detection/.ipynb_checkpoints
 
 mask_detection/mask_dataset
@@ -16,3 +18,4 @@ mask_segmentation/.ipynb_checkpoints
 
 ccgan/images/
 ccgan/models/
+mask_segmentation/weigth.pth
