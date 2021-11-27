@@ -58,7 +58,7 @@ if __name__ == "__main__":
         gan_preds = gan_utils.predict(
             generator=generator_model, images=faces, masks=faces_mask
         )
-        
+
         image = replace_face(image, gan_preds, locs)
 
         # show the output image

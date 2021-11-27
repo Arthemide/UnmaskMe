@@ -71,16 +71,16 @@ if __name__ == "__main__":
             gan_preds = gan_utils.predict(
                 generator=generator_model, images=faces, masks=faces_mask
             )
-            
-            image = replace_face(image, gan_preds, locs)
+
+            image = replace_face(frame, gan_preds, locs)
 
             # show the output frame
-            cv2.imshow("Frame", frame)
-            key = cv2.waitKey(1) & 0xFF
+        cv2.imshow("Frame", frame)
+        key = cv2.waitKey(1) & 0xFF
 
-            # if the `q` key was pressed, break from the loop
-            if key == ord("q"):
-                break
+        # if the `q` key was pressed, break from the loop
+        if key == ord("q"):
+            break
 
     # do a bit of cleanup
     cv2.destroyAllWindows()
