@@ -1,5 +1,7 @@
 # Unmask Me - INRIA Project
 
+[![GitHub Super-Linter](https://github.com/Arthemide/UnmaskMe/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 ## 🔑&nbsp; Prerequisites
 
 All the dependencies and required libraries are included in the file [requirements.txt](https://github.com/Arthemide/UnmaskMe/tree/dev/requirements.txt)
@@ -62,5 +64,3 @@ command
 ```bash
 streamlit run app.py 
 ```
-
-[![GitHub Super-Linter](https://github.com/Arthemide/UnmaskMe/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
