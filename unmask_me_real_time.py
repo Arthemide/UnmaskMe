@@ -11,6 +11,7 @@ from imutils.video import VideoStream
 from mask_detection import utils as mask_utils
 from mask_segmentation import utils as segmentation_utils
 from ccgan.src import generate as gan_utils
+from utils import replace_face
 
 output_path = "mask_detector/"
 
@@ -67,19 +68,19 @@ if __name__ == "__main__":
             faces_mask = segmentation_utils.predict(faces, segmentation_model)
 
             # predict the face underneath the mask
-            preds = gan_utils.predict(
+            gan_preds = gan_utils.predict(
                 generator=generator_model, images=faces, masks=faces_mask
             )
+            
+            image = replace_face(image, gan_preds, locs)
 
-        mask_utils.display_result(locs, preds, frame)
+            # show the output frame
+            cv2.imshow("Frame", frame)
+            key = cv2.waitKey(1) & 0xFF
 
-        # show the output frame
-        cv2.imshow("Frame", frame)
-        key = cv2.waitKey(1) & 0xFF
-
-        # if the `q` key was pressed, break from the loop
-        if key == ord("q"):
-            break
+            # if the `q` key was pressed, break from the loop
+            if key == ord("q"):
+                break
 
     # do a bit of cleanup
     cv2.destroyAllWindows()

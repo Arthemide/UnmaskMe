@@ -13,24 +13,21 @@ from torch.utils.data import DataLoader
 
 
 def load_models(filename, eval=True, device=None):
-    if os.path.isfile(filename):
-        if device is None:
-            device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        checkpoint = torch.load(filename, map_location=torch.device(device))
+    if device is None:
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    checkpoint = torch.load(filename, map_location=torch.device(device))
 
-        generator = Generator((3, 128, 128))
+    generator = Generator((3, 128, 128))
 
-        generator.load_state_dict(checkpoint["generator_state_dict"])
-        generator = generator.to(device)
+    generator.load_state_dict(checkpoint["generator_state_dict"])
+    generator = generator.to(device)
 
-        if eval is True:
-            generator.eval()
-        else:
-            generator.train()
-
-        return generator
+    if eval is True:
+        generator.eval()
     else:
-        return None
+        generator.train()
+
+    return generator
 
 
 transforms_ = [
