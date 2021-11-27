@@ -32,7 +32,7 @@ def load_models(device, ModelPath = 'weigth.pth'):
     # load our serialized face mask segmentation model from disk
     print("[INFO] loading face mask segmentation model...")
     Unet = UNet(3, 1).float()
-    Unet.load_state_dict(torch.load(ModelPath))
+    Unet.load_state_dict(torch.load(ModelPath, map_location=torch.device(device)))
     Unet.to(device)
     Unet.eval()  # tell the model to not train
     return Unet
