@@ -11,7 +11,7 @@ from models import Discriminator, Generator
 from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-import utils
+from utils import get_masked_face, save_sample, weights_init_normal
 
 # number of epochs of training
 n_epochs = 200
@@ -60,8 +60,8 @@ if cuda:
 
 
 # Initialize weights
-generator.apply(utils.weights_init_normal)
-discriminator.apply(utils.weights_init_normal)
+generator.apply(weights_init_normal)
+discriminator.apply(weights_init_normal)
 # Optimizers
 optimizer_G = torch.optim.Adam(generator.parameters(), lr=lr, betas=(b1, b2))
 optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=lr, betas=(b1, b2))
@@ -109,7 +109,7 @@ transforms_lr = [
 train_loader = DataLoader(
     ImageDataset(
         dataset_path,
-        get_mask=utils.get_masked_face,
+        get_mask=get_masked_face,
         transforms_x=transforms_,
         transforms_lr=transforms_lr,
     ),
@@ -199,7 +199,7 @@ for epoch in range(begin_epoch, n_epochs):
 
         batches_done = epoch * len(train_loader) + i
         if batches_done % sample_interval == 0:
-            utils.save_sample(generator, saved_samples, batches_done)
+            save_sample(generator, saved_samples, batches_done)
     if save_model_path:
         print("Saving models")
         torch.save(

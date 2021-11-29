@@ -10,7 +10,7 @@ from torch.autograd import Variable
 from torch.utils.data import DataLoader
 
 
-def load_models(filename, eval=True, device=None):
+def load_models(filename, device=None, eval=True):
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     checkpoint = torch.load(filename, map_location=torch.device(device))

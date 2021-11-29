@@ -43,7 +43,7 @@ if __name__ == "__main__":
     segmentation_model = segmentation_utils.load_models(
         device, "mask_segmentation/weigth.pth"
     )
-    generator_model = gan_utils.load_models("ccgan/models/ccgan-110.pth")
+    generator_model = gan_utils.load_models("ccgan/models/ccgan-110.pth", device)
 
     # initialize the video stream and allow the camera sensor to warm up
     print("[INFO] starting video stream...")
