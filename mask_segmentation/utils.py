@@ -6,6 +6,7 @@ import cv2
 import numpy as np
 import torchvision.transforms.functional as TF
 
+
 def predict(images, model):
     # define preprocess transforms
     transform = transforms.Compose(
@@ -23,12 +24,12 @@ def predict(images, model):
         t_image = torch.unsqueeze(t_image, 0)
         with torch.no_grad():
             pred = model(t_image)
-        pred = transforms.ToPILImage(mode='L')(torch.squeeze(pred, 0))
+        pred = transforms.ToPILImage(mode="L")(torch.squeeze(pred, 0))
         preds.append(pred)
     return preds
 
 
-def load_models(device, ModelPath = 'weigth.pth'):
+def load_models(device, ModelPath="weigth.pth"):
     # load our serialized face mask segmentation model from disk
     print("[INFO] loading face mask segmentation model...")
     Unet = UNet(3, 1).float()
