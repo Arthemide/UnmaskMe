@@ -1,11 +1,6 @@
-from numpy.lib.type_check import imag
 import torch
 from mask_segmentation.model import UNet
 from torchvision import transforms
-import cv2
-import numpy as np
-import torchvision.transforms.functional as TF
-
 
 def predict(images, model):
     # define preprocess transforms
