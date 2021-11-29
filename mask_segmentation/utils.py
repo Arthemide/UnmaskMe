@@ -2,6 +2,7 @@ import torch
 from mask_segmentation.model import UNet
 from torchvision import transforms
 
+
 def predict(images, model):
     # define preprocess transforms
     transform = transforms.Compose(
