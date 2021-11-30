@@ -34,6 +34,34 @@ class ImageDataset(Dataset):
         return len(self.files)
 
 
+class MaskDataset(Dataset):
+    def __init__(
+        self, apply, images, masks, transforms_x=None, transforms_lr=None, mode="train"
+    ):
+        assert len(images) == len(masks)
+        self.transform_x = transforms.Compose(transforms_x)
+        self.transform_lr = transforms.Compose(transforms_lr)
+
+        self.images = images
+        self.masks = masks
+
+        self.apply = apply
+
+    def __getitem__(self, index):
+
+        mask_applied = self.apply(
+            self.images[index % len(self.images)], self.masks[index % len(self.masks)]
+        )
+
+        x = self.transform_x(mask_applied)
+        x_lr = self.transform_lr(mask_applied)
+
+        return {"x": x, "x_lr": x_lr}
+
+    def __len__(self):
+        return len(self.images)
+
+
 # Dataset composed of only one image
 class UniqueDataset(Dataset):
     def __init__(self, image, transforms_x=None, transforms_lr=None, mode="eval"):

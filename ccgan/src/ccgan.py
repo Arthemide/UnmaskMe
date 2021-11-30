@@ -6,12 +6,12 @@ import os
 
 import torch
 import torchvision.transforms as transforms
-from datasets import ImageDataset
-from models import Discriminator, Generator
+from ccgan.src.datasets import ImageDataset
+from ccgan.src.models import Discriminator, Generator
+from ccgan.src.utils import get_masked_face, save_sample, weights_init_normal
 from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from utils import get_masked_face, save_sample, weights_init_normal
 
 # number of epochs of training
 n_epochs = 200
@@ -30,7 +30,7 @@ img_size = 128
 # number of image channels
 channels = 3
 # interval between image sampling
-sample_interval = 10
+sample_interval = 10000
 # set to none or load nth model in load_model_path
 load_model_n = 110
 
