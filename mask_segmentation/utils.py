@@ -15,6 +15,7 @@ def predict(images, model):
     preds = []
     # apply transform and predict on image separatly
     for image in images:
+        image = image[:, :, ::-1]
         t_image = transform(image)
         t_image = torch.unsqueeze(t_image, 0)
         with torch.no_grad():
