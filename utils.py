@@ -3,33 +3,63 @@ import dload
 
 
 def get_celeba():
-    if os.path.exists("dataset/celeba"):
-        print("Dataset already exists")
-        return
-    os.makedirs("dataset/", exist_ok=True)
+    path = "dataset/celeba"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
     print("Downloading CelebA dataset...")
     url = "https://link.eu1.storjshare.io/s/jurm4owtgpgrekgmrsvtz67n3wuq/datasets/celeba.zip?wrap=0"
-    return dload.save_unzip(url, "dataset/", True)
+    return dload.save_unzip(url, path.split("/")[0], True)
+
+
+def get_dataset():
+    path = "dataset/dataset"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
+    print("Downloading dataset...")
+    url = "https://link.eu1.storjshare.io/jxjaaumkj2zlbsadwkbu2dr4p7dq/datasets/dataset.zip?wrap=0"
+    return dload.save_unzip(url, path.split("/")[0], True)
 
 
 def get_MaskTheFace():
-    if os.path.exists("dataset/MaskTheFace"):
-        print("MaskTheFace already exists")
-        return
-    os.makedirs("dataset/", exist_ok=True)
+    path = "MaskTheFace"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
     print("Cloning MaskTheFace...")
     url = "https://github.com/aqeelanwar/MaskTheFace.git"
-    return dload.git_clone(url, "dataset/MaskTheFace")
+    return dload.git_clone(url, path)
 
 
 def get_mask_detector_model():
-    if os.path.exists("model_weights/mask_detector_model.pth"):
-        print("Mask detector model already exists")
-        return
-    os.makedirs("model_weights/", exist_ok=True)
-    print("Downloading  Mask detector model...")
-    url = "https://link.eu1.storjshare.io/juktaddoxro75bg4irc55ewerevq/datasets/model_mask_detector.pth"
-    return dload.save(url, "model_weights/mask_detector_model.pth")
+    path = "model_weights/mask_detector_model.pth"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
+    print("Downloading mask detector model...")
+    url = "https://link.eu1.storjshare.io/juktaddoxro75bg4irc55ewerevq/datasets/model_mask_detector.pth?wrap=0"
+    return dload.save(url, path)
+
+
+def get_mask_segmentation_model():
+    path = "model_weights/model_mask_segmentation.pth"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
+    print("Downloading mask segmentation model...")
+    url = "https://link.eu1.storjshare.io/jxab23e5luqjapxi72yweedmoumq/datasets/model_mask_segmentation.pth?wrap=0"
+    return dload.save(url, path)
+
+
+def get_ccgan_model():
+    path = "model_weights/ccgan-110.pth"
+    if os.path.exists(path):
+        return path
+    os.makedirs(path.split("/")[0], exist_ok=True)
+    print("Downloading ccgan-110 model...")
+    url = "https://link.eu1.storjshare.io/juznbc7nwnpecayfjhu4zmlwhpaa/datasets/ccgan-110.pth?wrap=0"
+    return dload.save(url, path)
 
 
 def replace_face(image, gan_preds, locations):
