@@ -1,5 +1,6 @@
 av==8.0.3
 dl==0.1.0
+dload==0.6
 imutils==0.5.4
 matplotlib==3.4.2
 numpy==1.19.5

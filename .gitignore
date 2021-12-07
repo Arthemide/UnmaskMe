@@ -11,11 +11,15 @@ mask_detection/.ipynb_checkpoints
 mask_detection/mask_dataset
 */.ipynb_checkspoints
 input/*
-MaskTheFace
 data/*
 mask_segmentation/data/*
 mask_segmentation/.ipynb_checkpoints
 
 ccgan/images/
 ccgan/models/
-mask_segmentation/weigth.pth
+
+# Ignore downloadable files
+model_weights/
+dataset/
+MaskTheFace/
+dlib_models/
