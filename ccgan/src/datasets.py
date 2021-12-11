@@ -6,6 +6,17 @@ from torch.utils.data import Dataset
 
 
 class ImageDataset(Dataset):
+    """
+    Dataset class for image dataset
+
+    Args:
+        root (string): Root directory of dataset
+        get_mask (function): Function to get mask from image
+        transforms_x (callable, optional): Optional transform to be applied on a sample
+        transforms_lr (callable, optional): Optional transform to be applied on a sample
+        mode (string, optional): Mode of dataset. Can be "train" or "eval"
+    """
+
     def __init__(
         self, root, get_mask, transforms_x=None, transforms_lr=None, mode="train"
     ):
@@ -35,6 +46,16 @@ class ImageDataset(Dataset):
 
 
 class MaskDataset(Dataset):
+    """
+    Dataset class for mask dataset
+
+        Args:
+            root (string): Root directory of dataset
+            transforms_x (callable, optional): Optional transform to be applied on a sample
+            transforms_lr (callable, optional): Optional transform to be applied on a sample
+            mode (string, optional): Mode of dataset. Can be "train" or "eval"
+    """
+
     def __init__(
         self, apply, images, masks, transforms_x=None, transforms_lr=None, mode="train"
     ):
@@ -64,6 +85,17 @@ class MaskDataset(Dataset):
 
 # Dataset composed of only one image
 class UniqueDataset(Dataset):
+    """
+    Dataset class for image dataset
+
+    Args:
+        root (string): Root directory of dataset
+        get_mask (function): Function to get mask from image
+        transforms_x (callable, optional): Optional transform to be applied on a sample
+        transforms_lr (callable, optional): Optional transform to be applied on a sample
+        mode (string, optional): Mode of dataset. Can be "train" or "eval"
+    """
+
     def __init__(self, image, transforms_x=None, transforms_lr=None, mode="eval"):
         self.transform_x = transforms.Compose(transforms_x)
         self.transform_lr = transforms.Compose(transforms_lr)
