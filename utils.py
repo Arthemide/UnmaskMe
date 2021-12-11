@@ -3,6 +3,12 @@ import dload
 
 
 def get_celeba():
+    """
+    Download and extract the CelebA dataset.
+
+    Returns:
+        str: Path to the extracted CelebA dataset.
+    """
     path = "dataset/celeba"
     if os.path.exists(path):
         return path
@@ -13,6 +19,12 @@ def get_celeba():
 
 
 def get_dataset():
+    """
+    Download and extract the masked dataset.
+
+    Returns:
+        str: Path to the extracted masked dataset.
+    """
     path = "dataset/dataset"
     if os.path.exists(path):
         return path
@@ -23,6 +35,12 @@ def get_dataset():
 
 
 def get_MaskTheFace():
+    """
+    Download and extract the MaskTheFace dataset.
+
+    Returns:
+        str: Path to the extracted MaskTheFace dataset.
+    """
     path = "MaskTheFace"
     if os.path.exists(path):
         return path
@@ -33,6 +51,12 @@ def get_MaskTheFace():
 
 
 def get_mask_detector_model():
+    """
+    Download and extract the MaskDetector model.
+
+    Returns:
+        str: Path to the extracted MaskDetector model.
+    """
     path = "model_weights/mask_detector_model.pth"
     if os.path.exists(path):
         return path
@@ -43,6 +67,12 @@ def get_mask_detector_model():
 
 
 def get_mask_segmentation_model():
+    """
+    Download and extract the mask segmentation model.
+
+    Returns:
+        str: Path to the extracted mask segmentation model.
+    """
     path = "model_weights/model_mask_segmentation.pth"
     if os.path.exists(path):
         return path
@@ -53,6 +83,12 @@ def get_mask_segmentation_model():
 
 
 def get_ccgan_model():
+    """
+    Download and extract the ccgan-110 model.
+
+    Returns:
+        str: Path to the extracted ccgan-110 model.
+    """
     path = "model_weights/ccgan-110.pth"
     if os.path.exists(path):
         return path
@@ -63,6 +99,17 @@ def get_ccgan_model():
 
 
 def replace_face(image, gan_preds, locations):
+    """
+    Replace the face in the image with the generated predictions.
+
+    Args:
+        image (numpy.ndarray): Image to be replaced.
+        gan_preds (numpy.ndarray): Predictions from the GAN.
+        locations (list): Locations of the face in the image.
+
+    Returns:
+        numpy.ndarray: Image with replaced face.
+    """
     for (box, pred) in zip(locations, gan_preds):
         (startX, startY, endX, endY) = box
         image[startY:endY, startX:endX] = pred
