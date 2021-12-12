@@ -50,7 +50,9 @@ class MaskDataset(Dataset):
     Dataset class for mask dataset
 
         Args:
-            root (string): Root directory of dataset
+            images (list): List of images to do prediction onto
+            masks (list): List of masks to apply to images, same length than images (sorted like images)
+            apply (callable): Function to apply to each image the associated mask 
             transforms_x (callable, optional): Optional transform to be applied on a sample
             transforms_lr (callable, optional): Optional transform to be applied on a sample
             mode (string, optional): Mode of dataset. Can be "train" or "eval"
@@ -81,32 +83,3 @@ class MaskDataset(Dataset):
 
     def __len__(self):
         return len(self.images)
-
-
-# Dataset composed of only one image
-class UniqueDataset(Dataset):
-    """
-    Dataset class for image dataset
-
-    Args:
-        root (string): Root directory of dataset
-        get_mask (function): Function to get mask from image
-        transforms_x (callable, optional): Optional transform to be applied on a sample
-        transforms_lr (callable, optional): Optional transform to be applied on a sample
-        mode (string, optional): Mode of dataset. Can be "train" or "eval"
-    """
-
-    def __init__(self, image, transforms_x=None, transforms_lr=None, mode="eval"):
-        self.transform_x = transforms.Compose(transforms_x)
-        self.transform_lr = transforms.Compose(transforms_lr)
-
-        self.image = image
-
-    def __getitem__(self, index):
-        x = self.transform_x(self.image)
-        x_lr = self.transform_lr(self.image)
-
-        return {"x": x, "x_lr": x_lr}
-
-    def __len__(self):
-        return 1
