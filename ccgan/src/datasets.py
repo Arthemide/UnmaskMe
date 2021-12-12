@@ -52,7 +52,7 @@ class MaskDataset(Dataset):
         Args:
             images (list): List of images to do prediction onto
             masks (list): List of masks to apply to images, same length than images (sorted like images)
-            apply (callable): Function to apply to each image the associated mask 
+            apply (callable): Function to apply to each image the associated mask
             transforms_x (callable, optional): Optional transform to be applied on a sample
             transforms_lr (callable, optional): Optional transform to be applied on a sample
             mode (string, optional): Mode of dataset. Can be "train" or "eval"
