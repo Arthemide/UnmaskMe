@@ -10,8 +10,6 @@ from mask_segmentation import utils as segmentation_utils
 from ccgan.src import generate as gan_utils
 from utils import replace_face
 
-output_path = "mask_detector/"
-
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -22,13 +20,6 @@ if __name__ == "__main__":
     # construct the argument parser and parse the arguments
     ap.add_argument("-i", "--image", type=str, help="image path")
     ap.add_argument(
-        "-m",
-        "--model",
-        type=str,
-        default="mask_detector.model",
-        help="path to trained face mask detector model",
-    )
-    ap.add_argument(
         "-c",
         "--confidence",
         type=float,
@@ -37,7 +28,7 @@ if __name__ == "__main__":
     )
     args = vars(ap.parse_args())
 
-    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
+    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector", "mask_detection/mask_detector")
     segmentation_model = segmentation_utils.load_models(
         device, "mask_segmentation/weigth.pth"
     )

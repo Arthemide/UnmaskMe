@@ -9,9 +9,6 @@ from torchvision import transforms
 
 from mask_detection import model as mask_model
 
-output_path = "mask_detection/mask_detector/"
-
-
 def predict(image, model):
     """
     Run the image through the model and return the results.
@@ -38,7 +35,7 @@ def predict(image, model):
     return preds
 
 
-def load_models(device, faceModelPath):
+def load_models(device, faceModelPath, maskModelPath):
     """
     Load the face detection and mask detection models.
 
@@ -63,8 +60,8 @@ def load_models(device, faceModelPath):
     print("[INFO] loading face mask detector model...")
     # initialize the model and load the trained weights
     maskModel = mask_model.FaceMaskDetectorModel().to(device)
-    # model.load_model(output_path+'model.pth')
-    checkpoint = torch.load(output_path + "model.pth", map_location=device)
+    modelPath = os.path.sep.join([maskModelPath, "model.pth"])
+    checkpoint = torch.load(modelPath, map_location=device)
     maskModel.load_state_dict(checkpoint["model_state_dict"])
     maskModel.eval()
 
