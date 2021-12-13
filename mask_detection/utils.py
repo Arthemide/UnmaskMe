@@ -9,6 +9,7 @@ from torchvision import transforms
 
 from mask_detection import model as mask_model
 
+
 def predict(image, model):
     """
     Run the image through the model and return the results.

@@ -28,7 +28,9 @@ if __name__ == "__main__":
     )
     args = vars(ap.parse_args())
 
-    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector", "mask_detection/mask_detector")
+    maskModel, faceNet = mask_utils.load_models(
+        device, "mask_detection/face_detector", "mask_detection/mask_detector"
+    )
     segmentation_model = segmentation_utils.load_models(
         device, "mask_segmentation/weigth.pth"
     )
