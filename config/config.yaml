@@ -1,9 +1,3 @@
-# configures the working direction of hydra.
-# If using relative paths, the working directory should be the root folder of ILO.
-hydra:
-  run:
-    dir: '.'
-
 # only StyleGAN is supported for now.
 model_type: 'stylegan'
 
@@ -12,7 +6,7 @@ stylegan:
   device: cuda
 
   # The pre-trained StyleGAN checkpoint
-  ckpt: stylegan2-ffhq-config-f.pt
+  ckpt: checkpoint/stylegan2-ffhq-config-f.pt
 
   ## weights of different losses
   geocross: 0.01
@@ -85,6 +79,8 @@ stylegan:
   ## files
   # If is_sequence=True, then the input_files and the output_files should be directories.
   is_sequence: false
+
+  # FIXME
   input_files:
     - files/original/john_cleese_no_nose.png
   output_files:

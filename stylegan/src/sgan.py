@@ -40,7 +40,7 @@ config = {
     'stylegan': {
         'seed': 42,
         'device': 'cuda',
-        'ckpt': 'stylegan2-ffhq-config-f.pt',
+        'ckpt': 'checkpoint/stylegan2-ffhq-config-f.pt',
         'geocross': 0.01,
         'mse': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
         'pe': [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
