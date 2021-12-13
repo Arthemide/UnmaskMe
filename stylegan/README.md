@@ -1,11 +1,16 @@
-# UnmaskMe
+# Unmask Me - INRIA Project
 
-## Style GAN
+[![GitHub Super-Linter](https://github.com/Arthemide/UnmaskMe/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
+## 🔑&nbsp; Prerequisites
+
+All the dependencies and required libraries are included in the file [requirements.txt](https://github.com/Arthemide/UnmaskMe/tree/dev/requirements.txt)
+## 🧠&nbsp; Style GAN
 
 Sources for the ccgan : [here](https://github.com/giannisdaras/ilo/).<br>
 From the paper [Intermediate Layer Optimization for Inverse Problems using Deep Generative Models](https://arxiv.org/abs/2102.07364) and [Colab demo](https://rb.gy/tj1ypl) by *Giannis Daras*, *Joseph Dean*, *Ajil Jalal* and *Alexandros G. Dimakis*.
 
-### Dataset
+### 📊&nbsp; Dataset
 
 Our dataset is based on **CelebA** dataset.<br>
 You can download the dataset [here](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).<br>
