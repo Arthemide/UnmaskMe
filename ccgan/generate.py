@@ -2,12 +2,13 @@ import cv2
 import numpy
 import torch
 import torchvision.transforms as transforms
-from ccgan.src.datasets import MaskDataset
-from ccgan.src.models import Generator
+from ccgan.datasets import MaskDataset
+from ccgan.models import Generator
 from functools import partial
 from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
+from torchvision.transforms.functional import InterpolationMode
 
 
 def load_models(filename, device=None, eval=True):
@@ -29,12 +30,12 @@ def load_models(filename, device=None, eval=True):
 
 
 transforms_ = [
-    transforms.Resize((128, 128), Image.BICUBIC),
+    transforms.Resize((128, 128), InterpolationMode.BICUBIC),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
 transforms_lr = [
-    transforms.Resize((128 // 4, 128 // 4), Image.BICUBIC),
+    transforms.Resize((128 // 4, 128 // 4), InterpolationMode.BICUBIC),
     transforms.ToTensor(),
     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
 ]
@@ -55,12 +56,11 @@ def get_mask_applied(img, mask):
 def get_np_result(image, mask, res, size):
     res = transforms.Compose(
         {
-            transforms.Resize(size),
             transforms.Normalize((-0.5, -0.5, -0.5), (2, 2, 2)),
         }
     )(res)
     res = transforms.ToPILImage()(torch.squeeze(res, 0))
-
+    res = res.resize((size[1], size[0]))
     mask = mask.resize((size[1], size[0]))
 
     pil_image = Image.composite(res, cv2_to_PIL(image), mask)
