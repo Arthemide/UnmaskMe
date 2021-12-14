@@ -25,7 +25,7 @@
 ## Future Improvements
 
 - [] YOLO for mask detection
-- [] Nicolas special work
+- [] StyleGan implementation
 
 ## ♻️&nbsp; Environment
 
