@@ -73,7 +73,10 @@ if __name__ == "__main__":
         help="Path to dataset of masks",
     )
     parser.add_argument(
-        "--model_path", type=str, default="../model_weights/ccgan-110.pth", help="interval between image sampling"
+        "--model_path",
+        type=str,
+        default="../model_weights/ccgan-110.pth",
+        help="interval between image sampling",
     )
     parser.add_argument(
         "--sample_path", type=str, default="images", help="Path to save sample images"
@@ -82,7 +85,10 @@ if __name__ == "__main__":
         "--output_path", type=str, default="models", help="Path to save trained model"
     )
     parser.add_argument(
-        "--load_data", type=bool, default=True, help="Set to false to use personnal data"
+        "--load_data",
+        type=bool,
+        default=True,
+        help="Set to false to use personnal data",
     )
     opt = parser.parse_args()
     n_epochs = opt.n_epochs
@@ -118,7 +124,6 @@ if __name__ == "__main__":
     # Loss function
     adversarial_loss = torch.nn.MSELoss()
 
-
     # Initialize generator and discriminator
     generator = Generator(input_shape)
     discriminator = Discriminator(input_shape)
@@ -127,7 +132,6 @@ if __name__ == "__main__":
         generator.cuda()
         discriminator.cuda()
         adversarial_loss.cuda()
-
 
     # Initialize weights
     generator.apply(weights_init_normal)
@@ -162,7 +166,6 @@ if __name__ == "__main__":
         else:
             print("[ERR] No such file as %s, can't load models" % filename)
 
-
     # Dataset loader
     transforms_ = [
         transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
@@ -175,7 +178,6 @@ if __name__ == "__main__":
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ]
 
-
     train_loader = DataLoader(
         ImageDataset(
             masks_path,
@@ -183,18 +185,20 @@ if __name__ == "__main__":
             transforms_x=transforms_,
             transforms_lr=transforms_lr,
             original_path=dataset_path,
-            masks_path=masks_path
+            masks_path=masks_path,
         ),
         batch_size=batch_size,
         shuffle=True,
         num_workers=n_cpu,
     )
 
-
     Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
     print("[LOG] Start training...")
-    print("[LOG] Models will be saved in \"%s\" every epoch and sample generated in \"%s\" every %dth loop" % (output_path, sample_path, sample_interval))
+    print(
+        '[LOG] Models will be saved in "%s" every epoch and sample generated in "%s" every %dth loop'
+        % (output_path, sample_path, sample_interval)
+    )
     saved_samples = {}
     for epoch in range(begin_epoch, n_epochs):
         for i, batch in enumerate(train_loader):
@@ -253,7 +257,14 @@ if __name__ == "__main__":
             if i % 1000 == 0:
                 print(
                     "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
-                    % (epoch, n_epochs, i, len(train_loader), d_loss.item(), g_loss.item())
+                    % (
+                        epoch,
+                        n_epochs,
+                        i,
+                        len(train_loader),
+                        d_loss.item(),
+                        g_loss.item(),
+                    )
                 )
 
             # Save first ten samples
@@ -262,7 +273,9 @@ if __name__ == "__main__":
                 saved_samples["masked"] = masked[:1].clone()
                 saved_samples["lowres"] = imgs_lr[:1].clone()
             elif saved_samples["imgs"].size(0) < 10:
-                saved_samples["imgs"] = torch.cat((saved_samples["imgs"], real_imgs[:1]), 0)
+                saved_samples["imgs"] = torch.cat(
+                    (saved_samples["imgs"], real_imgs[:1]), 0
+                )
                 saved_samples["masked"] = torch.cat(
                     (saved_samples["masked"], masked[:1]), 0
                 )

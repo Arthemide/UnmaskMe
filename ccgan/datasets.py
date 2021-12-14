@@ -6,7 +6,14 @@ from torch.utils.data import Dataset
 
 class ImageDataset(Dataset):
     def __init__(
-        self, root, get_mask, transforms_x=None, transforms_lr=None, mode="train", original_path=".", masks_path="."
+        self,
+        root,
+        get_mask,
+        transforms_x=None,
+        transforms_lr=None,
+        mode="train",
+        original_path=".",
+        masks_path=".",
     ):
         self.transform_x = transforms.Compose(transforms_x)
         self.transform_lr = transforms.Compose(transforms_lr)
@@ -61,21 +68,3 @@ class MaskDataset(Dataset):
 
     def __len__(self):
         return len(self.images)
-
-
-# Dataset composed of only one image
-class UniqueDataset(Dataset):
-    def __init__(self, image, transforms_x=None, transforms_lr=None, mode="eval"):
-        self.transform_x = transforms.Compose(transforms_x)
-        self.transform_lr = transforms.Compose(transforms_lr)
-
-        self.image = image
-
-    def __getitem__(self, index):
-        x = self.transform_x(self.image)
-        x_lr = self.transform_lr(self.image)
-
-        return {"x": x, "x_lr": x_lr}
-
-    def __len__(self):
-        return 1

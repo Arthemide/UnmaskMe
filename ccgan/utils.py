@@ -33,6 +33,9 @@ def save_sample(generator, saved_samples, batches_done, sample_path):
         gen_imgs = generator(saved_samples["masked"], saved_samples["lowres"])
         # Save sample
         sample = torch.cat(
-            (saved_samples["masked"].data, gen_imgs.data, saved_samples["imgs"].data), -2
+            (saved_samples["masked"].data, gen_imgs.data, saved_samples["imgs"].data),
+            -2,
         )
-        save_image(sample, "%s/%d.png" % (sample_path, batches_done), nrow=5, normalize=True)
+        save_image(
+            sample, "%s/%d.png" % (sample_path, batches_done), nrow=5, normalize=True
+        )

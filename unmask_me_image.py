@@ -7,8 +7,13 @@ import torch
 
 from mask_detection import utils as mask_utils
 from mask_segmentation import utils as segmentation_utils
-from ccgan.src import generate as gan_utils
-from utils import replace_face
+from ccgan import generate as gan_utils
+from ressources import (
+    replace_face,
+    get_mask_detector_model,
+    get_mask_segmentation_model,
+    get_ccgan_model,
+)
 
 output_path = "mask_detector/"
 
@@ -37,11 +42,15 @@ if __name__ == "__main__":
     )
     args = vars(ap.parse_args())
 
+    get_mask_detector_model()
+    get_mask_segmentation_model()
+    get_ccgan_model()
+
     maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector")
     segmentation_model = segmentation_utils.load_models(
-        device, "mask_segmentation/weigth.pth"
+        device, "model_weights/model_mask_segmentation.pth"
     )
-    generator_model = gan_utils.load_models("ccgan/models/ccgan-110.pth", device)
+    generator_model = gan_utils.load_model("model_weights/ccgan-110.pth", device)
     print("[INFO] Models loaded")
 
     image = cv2.imread(args["image"])
