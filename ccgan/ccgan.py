@@ -5,17 +5,16 @@
 import argparse
 import os
 import sys
+import torch
+import torchvision.transforms as transforms
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-import torch
-import torchvision.transforms as transforms
 from datasets import ImageDataset
 from models import Discriminator, Generator
 from pathlib import Path
-from PIL import Image
 from ressources import get_ccgan_model, get_celeba, get_masks_samples
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
