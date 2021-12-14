@@ -27,6 +27,7 @@ All the dependencies and required libraries are included in the file [requiremen
 3. Create a Python virtual environment named 'unmaskMe' and activate it
 
     ```bash
+    pip install virtualenv
     virtualenv .unmaskMe
     ```
 
@@ -62,7 +63,7 @@ UnmaskMe webapp using Pytorch & Streamlit
 streamlit run app.py 
 ```
 
-## Link to the sub readme's
+## Link to the sub README's
 
 - [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_detection/README.md)
 - [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
