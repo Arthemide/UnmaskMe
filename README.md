@@ -2,6 +2,10 @@
 
 [![GitHub Super-Linter](https://github.com/Arthemide/UnmaskMe/workflows/Lint%20Code%20Base/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
+## ♻️&nbsp; Environment
+
+In order to implement this project, our team exploited Google Colab/Kaggle’s resources. My first experimentations of the pre-processing steps were built on my laptop since they were not computationally expensive, but the model got trained on Colab/Kaggle using GPU.
+
 ## 🔑&nbsp; Prerequisites
 
 All the dependencies and required libraries are included in the file [requirements.txt](https://github.com/Arthemide/UnmaskMe/tree/dev/requirements.txt)
@@ -38,11 +42,6 @@ All the dependencies and required libraries are included in the file [requiremen
 
 ## 🧑🏻‍💻&nbsp; Working
 
-<!-- 1. Open terminal. Go into the cloned project directory and type the following command:
-```
-$ python3 train_mask_detector.py --dataset dataset
-``` -->
-
 - To detect face masks in an image type the following command:
 
 ```bash
@@ -55,12 +54,40 @@ python3 unmask_me_image.py --image images/pic1.jpeg
 python3 unmask_me_real_time.py 
 ```
 
-## Streamlit app
+### Streamlit app
 
 UnmaskMe webapp using Pytorch & Streamlit
-
-command
 
 ```bash
 streamlit run app.py 
 ```
+
+## Link to the sub readme's
+
+- [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_detection/README.md)
+- [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
+- [CCGan](https://github.com/Arthemide/UnmaskMe/blob/dev/ccgan/README.md)
+
+## 🙋🏻‍♂️&nbsp; Authors
+
+- Marine Charra
+- Nicolas Cotoni
+- Amaury Delprat
+- Adrien Duot
+- Gireg Roussel
+
+## ✍🏼&nbsp; Citation
+
+If you find this repository useful, please use following citation
+
+```bash
+@misc{unmaskme_project_2021,
+title={Unmask me project via CCGan},
+author={Marine Charra, Nicolas Cotoni, Amaury Delprat, Adrien Duot and Gireg Roussel},
+year={2021},
+} 
+```
+
+## 📚 License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
