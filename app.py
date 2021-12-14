@@ -10,7 +10,6 @@ import torch
 import utils
 from PIL import Image, ImageEnhance
 from streamlit_webrtc import webrtc_streamer
-from webcam import webcam
 
 # Setting custom Page Title and Icon with changed layout and sidebar state
 st.set_page_config(page_title='Face Mask Detector', page_icon='😷', layout='centered', initial_sidebar_state='expanded')
