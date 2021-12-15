@@ -17,7 +17,15 @@ model.py and utils.py are for the main function.
 
 ## Train
 
-if you want to retrain the segmentation model you can simply run:
+if you want to retrain the segmentation model,in mask_segmentation directory you can run :
+
+``` bash
+git clone https://github.com/aqeelanwar/MaskTheFace.git
+
+sed -i 's/ utils./ MaskTheFace.utils./' MaskTheFace/utils/aux_functions.py
+```
+
+then:
 
 ``` bash
 python train.py
