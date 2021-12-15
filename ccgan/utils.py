@@ -6,19 +6,18 @@ from torchvision.transforms.functional import InterpolationMode
 from torchvision.utils import save_image
 
 
-
 def get_transforms(img_size):
     transform_x = [
-            transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ]
+        transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    ]
 
     transform_lr = [
-            transforms.Resize((img_size // 4, img_size // 4), InterpolationMode.BICUBIC),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-        ]
+        transforms.Resize((img_size // 4, img_size // 4), InterpolationMode.BICUBIC),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+    ]
     return transform_x, transform_lr
 
 

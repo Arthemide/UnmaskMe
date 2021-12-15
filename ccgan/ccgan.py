@@ -6,7 +6,6 @@ import argparse
 import os
 import sys
 import torch
-import torchvision.transforms as transforms
 
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
