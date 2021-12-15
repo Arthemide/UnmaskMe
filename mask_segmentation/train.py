@@ -1,13 +1,11 @@
 import os
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from tqdm import tqdm
 import numpy as np
 import random
-from torch.utils import data
-import os
 from MaskTheFace.utils.aux_functions import mask_image
 import torchvision.transforms.functional as TF
 import train_utils
@@ -18,7 +16,7 @@ BATCHSIZE = 4
 NUMEPOCHS = 3
 
 
-class dataset(data.Dataset):
+class dataset(Dataset):
     def __init__(
         self, src_image, args, train="train"
     ):  # initial logic happens like transform
