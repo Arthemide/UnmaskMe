@@ -182,9 +182,9 @@ if __name__ == "__main__":
 
     Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
-    print("[LOG] Start training... Models will be running on %s" % device)
+    print("[INFO] Start training... Models will be running on %s" % device)
     print(
-        '[LOG] Models will be saved in "%s" every epoch and sample generated in "%s" every %dth loop'
+        '[INFO] Models will be saved in "%s" every epoch and sample generated in "%s" every %dth loop'
         % (output_path, sample_path, sample_interval)
     )
     saved_samples = {}
