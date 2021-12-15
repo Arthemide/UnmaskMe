@@ -54,25 +54,27 @@ if __name__ == "__main__":
     print("[INFO] Models loaded")
 
     image = cv2.imread(args["image"])
-
-    (faces, locs, preds) = mask_utils.detect_and_predict_mask(
-        image, faceNet, maskModel, args["confidence"]
-    )
-
-    if len(faces) != 0:
-        # segment the mask on faces
-        faces_mask = segmentation_utils.predict(faces, segmentation_model)
-
-        # predict the face underneath the mask
-        gan_preds = gan_utils.predict(
-            generator=generator_model, images=faces, masks=faces_mask
+    if (image):
+        (faces, locs, preds) = mask_utils.detect_and_predict_mask(
+            image, faceNet, maskModel, args["confidence"]
         )
 
-        image = replace_face(image, gan_preds, locs)
+        if len(faces) != 0:
+            # segment the mask on faces
+            faces_mask = segmentation_utils.predict(faces, segmentation_model)
 
-        # show the output image
-        cv2.imshow("Output", image)
-        cv2.waitKey(0)
+            # predict the face underneath the mask
+            gan_preds = gan_utils.predict(
+                generator=generator_model, images=faces, masks=faces_mask
+            )
+
+            image = replace_face(image, gan_preds, locs)
+
+            # show the output image
+            cv2.imshow("Output", image)
+            cv2.waitKey(0)
+    else:
+        print("[INFO] Bad image path")
 
 # do a bit of cleanup
 cv2.destroyAllWindows()
