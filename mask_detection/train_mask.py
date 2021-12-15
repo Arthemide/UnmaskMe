@@ -54,6 +54,12 @@ def save_model(epochs, model, optimizer, criterion):
 def save_plots(train_acc, valid_acc, train_loss, valid_loss):
     """
     Function to save the loss and accuracy plots to disk.
+
+    Args:
+        train_acc (list): list of training accuracy values
+        valid_acc (list): list of validation accuracy values
+        train_loss (list): list of training loss values
+        valid_loss (list): list of validation loss values
     """
     # accuracy plots
     plt.figure(figsize=(10, 7))
@@ -213,6 +219,15 @@ criterion = nn.CrossEntropyLoss()
 
 # training
 def train(model, trainloader, optimizer, criterion):
+    """
+    Train the model
+
+    Args:
+        model: (torch.nn) model to train
+        trainloader: (torch.utils.data.DataLoader) train data loader
+        optimizer: (torch.optim) optimizer to use
+        criterion: (torch.nn) loss function
+    """
     model.train()
     print("Training")
     train_running_loss = 0.0
@@ -245,6 +260,14 @@ def train(model, trainloader, optimizer, criterion):
 
 # validation
 def validate(model, testloader, criterion):
+    """
+    Validate the model
+
+    Args:
+        model: (torch.nn) model to validate
+        testloader: (torch.utils.data.DataLoader) test data loader
+        criterion: (torch.nn) loss function
+    """
     model.eval()
     print("Validation")
     valid_running_loss = 0.0

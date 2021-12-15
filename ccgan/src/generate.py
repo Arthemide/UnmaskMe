@@ -11,6 +11,17 @@ from torch.utils.data import DataLoader
 
 
 def load_models(filename, device=None, eval=True):
+    """
+    Loads a generator from a file.
+
+    Args:
+        filename: The path to the file.
+        device: The device to load the models on.
+        eval: Whether to set the models to eval mode.
+
+    Returns:
+        A tuple of the generator
+    """
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     checkpoint = torch.load(filename, map_location=torch.device(device))
@@ -41,11 +52,30 @@ transforms_lr = [
 
 
 def cv2_to_PIL(img):
+    """
+    Converts a cv2 image to a PIL image.
+
+    Args:
+        img: The cv2 image.
+
+    Returns:
+        The PIL image.
+    """
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     return Image.fromarray(img)
 
 
 def get_mask_applied(img, mask):
+    """
+    Applies a mask to an image.
+
+    Args:
+        img: The image.
+        mask: The mask.
+
+    Returns:
+        The masked image.
+    """
     img = cv2_to_PIL(img)
     mask = mask.resize(img.size)
     white = Image.new("L", img.size, 255)
@@ -53,6 +83,18 @@ def get_mask_applied(img, mask):
 
 
 def get_np_result(image, mask, res, size):
+    """
+    Converts a tensor to a numpy array.
+
+    Args:
+        image: The image.
+        mask: The mask.
+        res: The tensor.
+        size: The size of the image.
+
+    Returns:
+        The numpy array.
+    """
     res = transforms.Compose(
         {
             transforms.Resize(size),
@@ -75,6 +117,19 @@ def get_np_result(image, mask, res, size):
 def predict(
     generator, images, masks, transforms_x=transforms_, transforms_lr=transforms_lr
 ):
+    """
+    Predicts the masks for a set of images.
+
+    Args:
+        generator: The generator.
+        images: The images.
+        masks: The masks.
+        transforms_x: The transforms to apply to the images.
+        transforms_lr: The transforms to apply to the low resolution images.
+
+    Returns:
+        The masks.
+    """
     if len(images) == 0:
         return list()
     generator.eval()

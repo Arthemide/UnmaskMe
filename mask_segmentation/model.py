@@ -77,6 +77,17 @@ class outconv(nn.Module):
 
 
 class UNet(nn.Module):
+    """
+    Unet, using different classes for down sizing the input image and then up sizing it
+
+    Args:
+        n_channels (int): the number of channel on the image input.
+        n_classes (int): the number of output classes
+
+    Returns:
+        (torch.nn.Module) : the Unet
+    """
+
     def __init__(self, n_channels, n_classes):
         super(UNet, self).__init__()
         self.inc = inconv(n_channels, 64)

@@ -1,16 +1,23 @@
 import torch
-from mask_segmentation.model import UNet
 from torchvision import transforms
+
+from mask_segmentation.model import UNet
 
 
 def predict(images, model):
+    """
+    Prediction fonction for the covid mask segmentation
+
+    Args:
+        image (list<numpy.array>): list of numpy array of face of different size.
+        model (torch.nn.Module): the segmentation model to use
+
+    Returns:
+        (list<numpy.array>)
+    """
     # define preprocess transforms
     transform = transforms.Compose(
-        [
-            transforms.ToPILImage(),
-            transforms.Resize((128, 128)),
-            transforms.ToTensor(),
-        ]
+        [transforms.ToPILImage(), transforms.Resize((128, 128)), transforms.ToTensor()]
     )
 
     preds = []
@@ -26,7 +33,16 @@ def predict(images, model):
 
 
 def load_models(device, ModelPath="weigth.pth"):
-    # load our serialized face mask segmentation model from disk
+    """
+    load our serialized face mask segmentation model from disk for evaluation
+
+    Args:
+        device: The device to load the models on.
+        ModelPath (string): path to the model weigth
+
+    Returns:
+        (torch.nn.Module) : the Unet
+    """
     print("[INFO] loading face mask segmentation model...")
     Unet = UNet(3, 1).float()
     Unet.load_state_dict(torch.load(ModelPath, map_location=torch.device(device)))
