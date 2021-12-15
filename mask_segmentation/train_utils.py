@@ -1,13 +1,15 @@
 import os
-import torch
+import random
+
+import cv2
+import dlib
 import matplotlib.pyplot as plt
 import numpy as np
-from model import UNet
-import cv2
-from scipy.stats import norm
+import torch
 from MaskTheFace.utils.aux_functions import download_dlib_model
-import dlib
-import random
+from scipy.stats import norm
+
+from model import UNet
 
 
 def fast_display(*img2dlist):
@@ -209,7 +211,7 @@ def generate_parallel_light_mask(
     rotate_M = cv2.getRotationMatrix2D(init_light_pos, direction, 1)
     mask = cv2.warpAffine(mask, rotate_M, (canvas_x, canvas_y))
     # crop
-    mask = mask[init_mask_ul[1]:init_mask_br[1], init_mask_ul[0]:init_mask_br[0]]
+    mask = mask[init_mask_ul[1] : init_mask_br[1], init_mask_ul[0] : init_mask_br[0]]
     mask = np.asarray(mask, dtype=np.uint8)
     # add median blur
     mask = cv2.medianBlur(mask, 9)

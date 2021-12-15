@@ -1,13 +1,15 @@
 import os
+import random
+
+import numpy as np
 import torch
 import torch.nn as nn
+import torchvision.transforms.functional as TF
+from MaskTheFace.utils.aux_functions import mask_image
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from tqdm import tqdm
-import numpy as np
-import random
-from MaskTheFace.utils.aux_functions import mask_image
-import torchvision.transforms.functional as TF
+
 import train_utils
 
 DATAPATH = "../data/img_align_celeba"

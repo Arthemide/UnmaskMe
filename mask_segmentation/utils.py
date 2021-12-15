@@ -1,6 +1,7 @@
 import torch
-from mask_segmentation.model import UNet
 from torchvision import transforms
+
+from mask_segmentation.model import UNet
 
 
 def predict(images, model):
