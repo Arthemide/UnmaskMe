@@ -8,18 +8,18 @@ from torchvision.utils import save_image
 
 
 def get_transforms(img_size):
-    transforms_ = [
+    transform_x = [
             transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
 
-    transforms_lr = [
+    transform_lr = [
             transforms.Resize((img_size // 4, img_size // 4), InterpolationMode.BICUBIC),
             transforms.ToTensor(),
             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ]
-    return transforms_, transforms_lr
+    return transform_x, transform_lr
 
 
 def weights_init_normal(m):

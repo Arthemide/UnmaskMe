@@ -65,15 +65,15 @@ def get_np_result(image, mask, img, size):
     return res
 
 
-transforms_, transforms_lr = get_transforms(128)
+transform_x, transform_lr = get_transforms(128)
 
 
 def predict(
     generator,
     images,
     masks,
-    transforms_x=transforms_,
-    transforms_lr=transforms_lr,
+    transforms_x=transform_x,
+    transforms_lr=transform_lr,
     apply=get_mask_applied,
 ):
     if len(images) == 0:

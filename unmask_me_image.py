@@ -54,7 +54,7 @@ if __name__ == "__main__":
     print("[INFO] Models loaded")
 
     image = cv2.imread(args["image"])
-    if (image):
+    if image is not None:
         (faces, locs, preds) = mask_utils.detect_and_predict_mask(
             image, faceNet, maskModel, args["confidence"]
         )

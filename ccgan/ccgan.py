@@ -165,13 +165,13 @@ if __name__ == "__main__":
         else:
             print("[ERR] No such file as %s, can't load models" % filename)
 
-    transforms_, transforms_lr = get_transforms(img_size)
+    transform_x, transform_lr = get_transforms(img_size)
     train_loader = DataLoader(
         ImageDataset(
             masks_path,
             get_mask=get_masked_face,
-            transforms_x=transforms_,
-            transforms_lr=transforms_lr,
+            transforms_x=transform_x,
+            transforms_lr=transform_lr,
             original_path=dataset_path,
             masks_path=masks_path,
         ),
