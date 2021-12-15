@@ -1,6 +1,5 @@
 import os
 import random
-
 import cv2
 import dlib
 import matplotlib.pyplot as plt
@@ -8,7 +7,6 @@ import numpy as np
 import torch
 from MaskTheFace.utils.aux_functions import download_dlib_model
 from scipy.stats import norm
-
 from model import UNet
 
 
