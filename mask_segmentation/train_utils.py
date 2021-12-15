@@ -38,9 +38,10 @@ def my_collate(batch):
         (torch.utils.data.dataloader)
     """
     len_batch = len(batch)  # original batch length
-    batch = list(filter(lambda x: x is not None, batch))  # filter out all the Nones
+    batch = list(filter(lambda x: x is not None,
+                        batch))  # filter out all the Nones
     if len_batch > len(
-        batch
+            batch
     ):  # if there are samples missing just use existing members, doesn't work if you reject every sample in a batch
         diff = len_batch - len(batch)
         for i in range(diff):
@@ -49,9 +50,9 @@ def my_collate(batch):
 
 
 def load(
-    path="../weigth.pth",
-    load=True,
-    device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
+        path="../weigth.pth",
+        load=True,
+        device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"),
 ):
     """
     load our serialized face mask segmentation model from disk for training
@@ -79,7 +80,6 @@ class AddGaussianNoise(object):
         mean (int): mean
         std (int): std
     """
-
     def __init__(self, mean=0.0, std=1.0):
         self.std = std
         self.mean = mean
@@ -89,8 +89,7 @@ class AddGaussianNoise(object):
 
     def __repr__(self):
         return self.__class__.__name__ + "(mean={0}, std={1})".format(
-            self.mean, self.std
-        )
+            self.mean, self.std)
 
 
 class Args:
@@ -99,10 +98,11 @@ class Args:
 
 
     """
-
-    def __init__(
-        self, mask_types=["surgical"], pattern="", color="#0473e2", color_weight=0.5
-    ):
+    def __init__(self,
+                 mask_types=["surgical"],
+                 pattern="",
+                 color="#0473e2",
+                 color_weight=0.5):
         self.mask_types = mask_types
         self.mask_type = mask_types[0]
         self.pattern = pattern
@@ -177,7 +177,8 @@ def generate_parallel_light_mask(
         if mode == "linear_static":
             linear_decay_rate = random.uniform(0.2, 2)
         if mode == "linear_dynamic":
-            linear_decay_rate = (max_brightness - min_brightness) / max(mask_size)
+            linear_decay_rate = (max_brightness -
+                                 min_brightness) / max(mask_size)
     assert mode in [
         "linear_dynamic",
         "linear_static",
@@ -195,13 +196,12 @@ def generate_parallel_light_mask(
     # fill in mask row by row with value decayed from center
     for i in range(canvas_y):
         if mode == "linear":
-            i_value = _decayed_value_in_linear(
-                i, max_brightness, init_light_pos[1], linear_decay_rate
-            )
+            i_value = _decayed_value_in_linear(i, max_brightness,
+                                               init_light_pos[1],
+                                               linear_decay_rate)
         elif mode == "gaussian":
-            i_value = _decayed_value_in_norm(
-                i, max_brightness, min_brightness, init_light_pos[1], mask_size[1]
-            )
+            i_value = _decayed_value_in_norm(i, max_brightness, min_brightness,
+                                             init_light_pos[1], mask_size[1])
         else:
             i_value = 0
         mask[i] = i_value
@@ -209,7 +209,8 @@ def generate_parallel_light_mask(
     rotate_M = cv2.getRotationMatrix2D(init_light_pos, direction, 1)
     mask = cv2.warpAffine(mask, rotate_M, (canvas_x, canvas_y))
     # crop
-    mask = mask[init_mask_ul[1] : init_mask_br[1], init_mask_ul[0] : init_mask_br[0]]
+    mask = mask[init_mask_ul[1]:init_mask_br[1],
+                init_mask_ul[0]:init_mask_br[0]]
     mask = np.asarray(mask, dtype=np.uint8)
     # add median blur
     mask = cv2.medianBlur(mask, 9)
