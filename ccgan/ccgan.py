@@ -160,7 +160,7 @@ if __name__ == "__main__":
 
             generator.train()
             discriminator.train()
-            print("[LOG] Model Loaded")
+            print("[INFO] Model Loaded")
 
         else:
             print("[ERR] No such file as %s, can't load models" % filename)
