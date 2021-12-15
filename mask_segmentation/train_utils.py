@@ -104,7 +104,6 @@ class Args:
         self, mask_types=["surgical"], pattern="", color="#0473e2", color_weight=0.5
     ):
         self.mask_types = mask_types
-        #'surgical', 'N95', 'KN95', 'cloth', 'gas'
         self.mask_type = mask_types[0]
         self.pattern = pattern
         self.color = color
@@ -210,7 +209,7 @@ def generate_parallel_light_mask(
     rotate_M = cv2.getRotationMatrix2D(init_light_pos, direction, 1)
     mask = cv2.warpAffine(mask, rotate_M, (canvas_x, canvas_y))
     # crop
-    mask = mask[init_mask_ul[1]: init_mask_br[1], init_mask_ul[0]: init_mask_br[0]]
+    mask = mask[init_mask_ul[1] : init_mask_br[1], init_mask_ul[0] : init_mask_br[0]]
     mask = np.asarray(mask, dtype=np.uint8)
     # add median blur
     mask = cv2.medianBlur(mask, 9)
