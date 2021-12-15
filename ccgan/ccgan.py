@@ -18,8 +18,7 @@ from pathlib import Path
 from ressources import get_ccgan_model, get_celeba, get_masks_samples
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from torchvision.transforms.functional import InterpolationMode
-from utils import get_masked_face, save_sample, weights_init_normal
+from utils import get_masked_face, get_transforms, save_sample, weights_init_normal
 
 
 if __name__ == "__main__":
@@ -145,12 +144,12 @@ if __name__ == "__main__":
     # ---------------------
 
     begin_epoch = 0
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     if model_path is not None:
         filename = model_path
         if os.path.isfile(filename):
             print("[LOG] Loading model %s" % filename)
-            device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
             checkpoint = torch.load(filename, map_location=torch.device(device))
             begin_epoch = checkpoint["epoch"] + 1
             generator.load_state_dict(checkpoint["generator_state_dict"])
@@ -161,22 +160,12 @@ if __name__ == "__main__":
 
             generator.train()
             discriminator.train()
+            print("[LOG] Model Loaded")
 
         else:
             print("[ERR] No such file as %s, can't load models" % filename)
 
-    # Dataset loader
-    transforms_ = [
-        transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-    ]
-    transforms_lr = [
-        transforms.Resize((img_size // 4, img_size // 4), InterpolationMode.BICUBIC),
-        transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-    ]
-
+    transforms_, transforms_lr = get_transforms(img_size)
     train_loader = DataLoader(
         ImageDataset(
             masks_path,
@@ -193,7 +182,7 @@ if __name__ == "__main__":
 
     Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 
-    print("[LOG] Start training...")
+    print("[LOG] Start training... Models will be running on %s" % device)
     print(
         '[LOG] Models will be saved in "%s" every epoch and sample generated in "%s" every %dth loop'
         % (output_path, sample_path, sample_interval)

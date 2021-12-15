@@ -4,6 +4,7 @@ import torch
 import torchvision.transforms as transforms
 from ccgan.datasets import MaskDataset
 from ccgan.models import Generator
+from ccgan.utils import get_transforms
 from functools import partial
 from PIL import Image
 from torch.autograd import Variable
@@ -27,18 +28,6 @@ def load_model(filename, device=None, eval=True):
         generator.train()
 
     return generator
-
-
-transforms_ = [
-    transforms.Resize((128, 128), InterpolationMode.BICUBIC),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]
-transforms_lr = [
-    transforms.Resize((128 // 4, 128 // 4), InterpolationMode.BICUBIC),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]
 
 
 def cv2_to_PIL(img):
@@ -74,6 +63,9 @@ def get_np_result(image, mask, img, size):
     pil_image.close()
 
     return res
+
+
+transforms_, transforms_lr = get_transforms(128)
 
 
 def predict(

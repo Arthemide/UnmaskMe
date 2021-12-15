@@ -1,8 +1,25 @@
-from pathlib import Path
-
 import torch
+import torchvision.transforms as transforms
+from pathlib import Path
 from PIL import Image
+from torchvision.transforms.functional import InterpolationMode
 from torchvision.utils import save_image
+
+
+
+def get_transforms(img_size):
+    transforms_ = [
+            transforms.Resize((img_size, img_size), InterpolationMode.BICUBIC),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ]
+
+    transforms_lr = [
+            transforms.Resize((img_size // 4, img_size // 4), InterpolationMode.BICUBIC),
+            transforms.ToTensor(),
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
+        ]
+    return transforms_, transforms_lr
 
 
 def weights_init_normal(m):
