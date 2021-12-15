@@ -3,6 +3,12 @@ import dload
 
 
 def get_celeba(path="dataset/celeba"):
+    """
+    Download and extract the CelebA dataset.
+
+    Returns:
+        str: Path to the extracted CelebA dataset.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -12,6 +18,12 @@ def get_celeba(path="dataset/celeba"):
 
 
 def get_dataset(path="dataset/dataset"):
+    """
+    Download and extract the masked dataset.
+
+    Returns:
+        str: Path to the extracted masks dataset.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -21,6 +33,12 @@ def get_dataset(path="dataset/dataset"):
 
 
 def get_masks_samples(path="dataset/masks_samples"):
+    """
+    Download and extract the celebA masks dataset.
+
+    Returns:
+        str: Path to the extracted masked dataset.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -30,6 +48,12 @@ def get_masks_samples(path="dataset/masks_samples"):
 
 
 def get_MaskTheFace(path="MaskTheFace"):
+    """
+    Download and extract the MaskTheFace dataset.
+
+    Returns:
+        str: Path to the extracted MaskTheFace dataset.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -39,6 +63,12 @@ def get_MaskTheFace(path="MaskTheFace"):
 
 
 def get_mask_detector_model(path="model_weights/mask_detector_model.pth"):
+    """
+    Download and extract the MaskDetector model.
+
+    Returns:
+        str: Path to the extracted MaskDetector model.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -48,6 +78,12 @@ def get_mask_detector_model(path="model_weights/mask_detector_model.pth"):
 
 
 def get_mask_segmentation_model(path="model_weights/model_mask_segmentation.pth"):
+    """
+    Download and extract the mask segmentation model.
+
+    Returns:
+        str: Path to the extracted mask segmentation model.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -57,6 +93,12 @@ def get_mask_segmentation_model(path="model_weights/model_mask_segmentation.pth"
 
 
 def get_ccgan_model(path="model_weights/ccgan-110.pth"):
+    """
+    Download and extract the ccgan-110 model.
+
+    Returns:
+        str: Path to the extracted ccgan-110 model.
+    """
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
@@ -66,6 +108,17 @@ def get_ccgan_model(path="model_weights/ccgan-110.pth"):
 
 
 def replace_face(image, gan_preds, locations):
+    """
+    Replace the face in the image with the generated predictions.
+
+    Args:
+        image (numpy.ndarray): Image to be replaced.
+        gan_preds (numpy.ndarray): Predictions from the GAN.
+        locations (list): Locations of the face in the image.
+
+    Returns:
+        numpy.ndarray: Image with replaced face.
+    """
     for (box, pred) in zip(locations, gan_preds):
         (startX, startY, endX, endY) = box
         image[startY:endY, startX:endX] = pred

@@ -21,6 +21,15 @@ class FaceMaskDetectorModel(nn.Module):
         self.model = FaceMaskDetectorModel
 
     def forward(self, x):
+        """
+        Forward pass
+
+        Args:
+            x: input image
+
+        Returns:
+            output: output of the model
+        """
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = self.pool(F.relu(self.conv3(x)))
@@ -31,17 +40,31 @@ class FaceMaskDetectorModel(nn.Module):
         return x
 
     def predict(self, images):
+        """
+        Predict
+
+        Args:
+            images: input images
+
+        Returns:
+            output: output of the model
+        """
         self.FaceMaskDetectorModel.to(self.device)
         self.FaceMaskDetectorModel.eval()
         preds = self.FaceMaskDetectorModel(images)
 
         return preds
 
-    """
-    Function to save the trained model to disk.
-    """
-
     def save_model(self, epochs, optimizer, criterion, path):
+        """
+        Save model trained model and optimizer
+
+        Args:
+            epochs: number of epochs
+            optimizer: optimizer
+            criterion: loss function
+            path: path to save the model
+        """
         torch.save(
             {
                 "epoch": epochs,

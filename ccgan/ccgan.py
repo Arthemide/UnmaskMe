@@ -105,10 +105,10 @@ if __name__ == "__main__":
 
     # Loading data
     if opt.load_data:
-        get_celeba(dataset_path)
-        get_masks_samples(masks_path)
+        dataset_path = get_celeba(dataset_path)
+        masks_path = get_masks_samples(masks_path)
         if model_path is not None and Path(model_path).stem == "ccgan-110":
-            get_ccgan_model(model_path)
+            model_path = get_ccgan_model(model_path)
     if output_path is not None:
         os.makedirs(output_path, exist_ok=True)
     if sample_path is not None:

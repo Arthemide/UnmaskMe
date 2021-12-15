@@ -9,10 +9,18 @@ from torchvision import transforms
 
 from mask_detection import model as mask_model
 
-output_path = "mask_detection/mask_detector/"
-
 
 def predict(image, model):
+    """
+    Run the image through the model and return the results.
+
+    Args:
+        image (numpy.ndarray): an image of shape (H, W, 3)
+        model (torch.nn.Module): a PyTorch model
+
+    Returns:
+        torch.Tensor: an image of shape (H, W, 3)
+    """
     # define preprocess transforms
     transform = transforms.Compose(
         [transforms.ToPILImage(), transforms.Resize(224), transforms.ToTensor()]
@@ -28,7 +36,19 @@ def predict(image, model):
     return preds
 
 
-def load_models(device, faceModelPath):
+def load_models(device, faceModelPath, maskModelPath):
+    """
+    Load the face detection and mask detection models.
+
+        Args:
+            device (torch.device): the device to load the models to
+            faceModelPath (str): path to the face detection model
+            maskModelPath (str): path to the mask detection model
+
+        Returns:
+            torch.nn.Module: a PyTorch model
+            torch.nn.Module: a PyTorch model
+    """
     # load our serialized face detector model from disk
     print("[INFO] loading face detector model...")
     prototxtPath = os.path.sep.join([faceModelPath, "deploy.prototxt"])
@@ -41,8 +61,7 @@ def load_models(device, faceModelPath):
     print("[INFO] loading face mask detector model...")
     # initialize the model and load the trained weights
     maskModel = mask_model.FaceMaskDetectorModel().to(device)
-    # model.load_model(output_path+'model.pth')
-    checkpoint = torch.load(output_path + "model.pth", map_location=device)
+    checkpoint = torch.load(maskModelPath, map_location=device)
     maskModel.load_state_dict(checkpoint["model_state_dict"])
     maskModel.eval()
 
@@ -50,6 +69,17 @@ def load_models(device, faceModelPath):
 
 
 def display_result(locations, predictions, frame):
+    """
+    Display the results.
+
+    Args:
+        locations (list): a list of bounding boxes
+        predictions (list): a list of predictions
+        frame (numpy.ndarray): an image of shape (H, W, 3)
+
+    Returns:
+        numpy.ndarray: an image of shape (H, W, 3)
+    """
     # loop over the detected face locations and their corresponding locations
     for (box, pred) in zip(locations, predictions):
         # unpack the bounding box and predictions
@@ -78,6 +108,20 @@ def display_result(locations, predictions, frame):
 
 
 def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
+    """
+    Detect the faces and predict the masks.
+
+    Args:
+        frame (numpy.ndarray): an image of shape (H, W, 3)
+        faceNet (torch.nn.Module): a PyTorch model
+        maskModel (torch.nn.Module): a PyTorch model
+        default_confidence (float): the default confidence to use if no mask is detected
+
+    Returns:
+        numpy.ndarray: an image of shape (H, W, 3)
+        list: a list of bounding boxes
+        list: a list of predictions
+    """
     # grab the dimensions of the frame and then construct a blob
     # from it
     (h, w) = frame.shape[:2]
