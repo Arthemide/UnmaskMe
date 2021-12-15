@@ -149,7 +149,7 @@ if __name__ == "__main__":
     if model_path is not None:
         filename = model_path
         if os.path.isfile(filename):
-            print("[LOG] Loading model %s" % filename)
+            print("[INFO] Loading model %s" % filename)
             checkpoint = torch.load(filename, map_location=torch.device(device))
             begin_epoch = checkpoint["epoch"] + 1
             generator.load_state_dict(checkpoint["generator_state_dict"])
