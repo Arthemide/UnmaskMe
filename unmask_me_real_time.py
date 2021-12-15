@@ -40,7 +40,9 @@ if __name__ == "__main__":
     get_mask_segmentation_model()
     get_ccgan_model()
 
-    maskModel, faceNet = mask_utils.load_models(device, "mask_detection/face_detector", "model_weights/mask_detector_model.pth")
+    maskModel, faceNet = mask_utils.load_models(
+        device, "mask_detection/face_detector", "model_weights/mask_detector_model.pth"
+    )
     segmentation_model = segmentation_utils.load_models(
         device, "model_weights/model_mask_segmentation.pth"
     )
