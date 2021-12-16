@@ -2,15 +2,17 @@ import cv2
 import numpy
 import torch
 import torchvision.transforms as transforms
-from ccgan.src.datasets import MaskDataset
-from ccgan.src.models import Generator
+from ccgan.datasets import MaskDataset
+from ccgan.models import Generator
+from ccgan.utils import get_transforms
 from functools import partial
 from PIL import Image
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
+from torchvision.transforms.functional import InterpolationMode
 
 
-def load_models(filename, device=None, eval=True):
+def load_model(filename, device=None, eval=True):
     """
     Loads a generator from a file.
 
@@ -37,18 +39,6 @@ def load_models(filename, device=None, eval=True):
         generator.train()
 
     return generator
-
-
-transforms_ = [
-    transforms.Resize((128, 128), Image.BICUBIC),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]
-transforms_lr = [
-    transforms.Resize((128 // 4, 128 // 4), Image.BICUBIC),
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
-]
 
 
 def cv2_to_PIL(img):
@@ -82,30 +72,33 @@ def get_mask_applied(img, mask):
     return Image.composite(white, img, mask)
 
 
-def get_np_result(image, mask, res, size):
+def get_np_result(image, mask, img, size):
     """
     Converts a tensor to a numpy array.
 
     Args:
-        image: The image.
-        mask: The mask.
-        res: The tensor.
-        size: The size of the image.
+        image: The image (numpy)
+        mask: The mask (pillow)
+        img: The tensor
+        size(tuple of int): The size of the image.
 
     Returns:
         The numpy array.
     """
-    res = transforms.Compose(
-        {
-            transforms.Resize(size),
-            transforms.Normalize((-0.5, -0.5, -0.5), (2, 2, 2)),
-        }
-    )(res)
-    res = transforms.ToPILImage()(torch.squeeze(res, 0))
+    inverseTransform = transforms.Compose(
+        [
+            transforms.Normalize(mean=[0.0, 0.0, 0.0], std=[2, 2, 2]),
+            transforms.Normalize(mean=[-0.5, -0.5, -0.5], std=[1.0, 1.0, 1.0]),
+            transforms.Resize(size, InterpolationMode.BICUBIC),
+        ]
+    )
+    img = inverseTransform(img)
+    img = transforms.ToPILImage()(torch.squeeze(img, 0))
 
     mask = mask.resize((size[1], size[0]))
 
-    pil_image = Image.composite(res, cv2_to_PIL(image), mask)
+    pil_image = Image.composite(img, cv2_to_PIL(image), mask)
+
     res = cv2.cvtColor(numpy.array(pil_image), cv2.COLOR_BGR2RGB)
 
     mask.close()
@@ -114,8 +107,16 @@ def get_np_result(image, mask, res, size):
     return res
 
 
+transform_x, transform_lr = get_transforms(128)
+
+
 def predict(
-    generator, images, masks, transforms_x=transforms_, transforms_lr=transforms_lr
+    generator,
+    images,
+    masks,
+    transforms_x=transform_x,
+    transforms_lr=transform_lr,
+    apply=get_mask_applied,
 ):
     """
     Predicts the masks for a set of images.
@@ -126,9 +127,10 @@ def predict(
         masks: The masks.
         transforms_x: The transforms to apply to the images.
         transforms_lr: The transforms to apply to the low resolution images.
+        apply: function to apply to get masks applied to images
 
     Returns:
-        The masks.
+        The predictions as numpy array inpainted in the original images.
     """
     if len(images) == 0:
         return list()
@@ -136,7 +138,7 @@ def predict(
 
     loader = DataLoader(
         MaskDataset(
-            apply=get_mask_applied,
+            apply=apply,
             images=images,
             masks=masks,
             transforms_x=transforms_x,
@@ -151,6 +153,9 @@ def predict(
             img = generator(Variable(b["x"]), Variable(b["x_lr"]))
             results.append(img)
 
-    size = (len(images[0]), len(images[0][0]))
+    if isinstance(images[0], numpy.ndarray):
+        size = (len(images[0]), len(images[0][0]))
+    else:
+        size = images[0].size
 
     return list(map(partial(get_np_result, size=size), images, masks, results))

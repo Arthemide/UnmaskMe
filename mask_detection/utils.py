@@ -61,8 +61,7 @@ def load_models(device, faceModelPath, maskModelPath):
     print("[INFO] loading face mask detector model...")
     # initialize the model and load the trained weights
     maskModel = mask_model.FaceMaskDetectorModel().to(device)
-    modelPath = os.path.sep.join([maskModelPath, "model.pth"])
-    checkpoint = torch.load(modelPath, map_location=device)
+    checkpoint = torch.load(maskModelPath, map_location=device)
     maskModel.load_state_dict(checkpoint["model_state_dict"])
     maskModel.eval()
 
