@@ -4,23 +4,37 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-
 # Model class declaration
 class FaceMaskDetectorModel(nn.Module):
-    def __init__(self):
-        super(FaceMaskDetectorModel, self).__init__()
-        self.conv1 = nn.Conv2d(3, 32, 5)
-        self.conv2 = nn.Conv2d(32, 64, 5)
-        self.conv3 = nn.Conv2d(64, 128, 3)
-        self.conv4 = nn.Conv2d(128, 256, 5)
+    def __init__(self, num_classes: int = 1000, dropout: float = 0.5) -> None:
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv2d(3, 64, kernel_size=11, stride=4, padding=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+            nn.Conv2d(64, 192, kernel_size=5, padding=2),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+            nn.Conv2d(192, 384, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(384, 256, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.Conv2d(256, 256, kernel_size=3, padding=1),
+            nn.ReLU(inplace=True),
+            nn.MaxPool2d(kernel_size=3, stride=2),
+        )
+        self.avgpool = nn.AdaptiveAvgPool2d((6, 6))
+        self.classifier = nn.Sequential(
+            nn.Dropout(p=dropout),
+            nn.Linear(256 * 6 * 6, 4096),
+            nn.ReLU(inplace=True),
+            nn.Dropout(p=dropout),
+            nn.Linear(4096, 4096),
+            nn.ReLU(inplace=True),
+            nn.Linear(4096, num_classes),
+        )
 
-        self.fc1 = nn.Linear(256, 50)
-
-        self.pool = nn.MaxPool2d(2, 2)
-
-        self.model = FaceMaskDetectorModel
-
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Forward pass
 
@@ -30,50 +44,8 @@ class FaceMaskDetectorModel(nn.Module):
         Returns:
             output: output of the model
         """
-        x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = self.pool(F.relu(self.conv3(x)))
-        x = self.pool(F.relu(self.conv4(x)))
-        bs, _, _, _ = x.shape
-        x = F.adaptive_avg_pool2d(x, 1).reshape(bs, -1)
-        x = self.fc1(x)
+        x = self.features(x)
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.classifier(x)
         return x
-
-    def predict(self, images):
-        """
-        Predict
-
-        Args:
-            images: input images
-
-        Returns:
-            output: output of the model
-        """
-        self.FaceMaskDetectorModel.to(self.device)
-        self.FaceMaskDetectorModel.eval()
-        preds = self.FaceMaskDetectorModel(images)
-
-        return preds
-
-    def save_model(self, epochs, optimizer, criterion, path):
-        """
-        Save model trained model and optimizer
-
-        Args:
-            epochs: number of epochs
-            optimizer: optimizer
-            criterion: loss function
-            path: path to save the model
-        """
-        torch.save(
-            {
-                "epoch": epochs,
-                "model_state_dict": self.model.state_dict(),
-                "optimizer_state_dict": optimizer.state_dict(),
-                "loss": criterion,
-            },
-            path,
-        )
-
-    def load_model(self, path):
-        self.model.load_state_dict(torch.load(path, map_location=torch.device("cpu")))
