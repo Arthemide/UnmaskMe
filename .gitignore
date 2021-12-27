@@ -9,6 +9,7 @@ unmaskme-env/
 mask_detection/.ipynb_checkpoints
 
 mask_detection/mask_dataset
+mask_detection/dataset
 */.ipynb_checkspoints
 input/*
 data/*
@@ -20,6 +21,7 @@ ccgan/models/
 
 # Ignore downloadable files
 model_weights/
-dataset/
+dataset/celeba
+dataset/dataset
 MaskTheFace/
 dlib_models/
