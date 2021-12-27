@@ -1,22 +1,17 @@
-# -*- coding: utf-8 -*-
 # Principal packages
 import os
-import sys
 import time
 import torch
 import argparse
 import torch.nn as nn
 import torch.optim as optim
 
-current_dir = os.path.dirname(os.path.realpath(__file__))
-parrent_dir = os.path.dirname(current_dir)
-sys.path.append(parrent_dir)
-
 # Helper libraries
 from utils import save_model, save_plots, EarlyStopping, LRScheduler, train, validate 
 from dataset import get_transforms, get_data_loader
 from model import FaceMaskDetectorModel
-from ressources import get_dataset, split_dataset
+from dataset.utils import split_dataset
+from ressources import get_dataset
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
