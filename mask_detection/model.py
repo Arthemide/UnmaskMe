@@ -1,7 +1,7 @@
 # Principal packages
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+
 
 # Model class declaration
 class FaceMaskDetectorModel(nn.Module):

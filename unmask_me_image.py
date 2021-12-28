@@ -40,9 +40,8 @@ if __name__ == "__main__":
         get_ccgan_model()
     except:
 
-        print('error')
-        raise ValueError('Error while loading models')
-   
+        print("error")
+        raise ValueError("Error while loading models")
 
     maskModel, faceNet = mask_utils.load_models(
         device, "model_weights/face_detector", "model_weights/mask_detector_model.pth"

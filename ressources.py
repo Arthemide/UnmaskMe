@@ -1,12 +1,7 @@
 import os
 import dload
 import os
-import random
-import time
-import pandas as pd
-import numpy as np
-from shutil import copyfile, rmtree
-import tqdm
+
 
 def get_celeba(path="dataset/celeba"):
     """
