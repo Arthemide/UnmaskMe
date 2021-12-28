@@ -11,11 +11,12 @@ from tqdm.auto import tqdm
 from mask_detection import model as mask_model
 
 # Early stopping
-class EarlyStopping():
+class EarlyStopping:
     """
     Early stopping to stop the training when the loss does not improve after
     certain epochs.
     """
+
     def __init__(self, patience=5, min_delta=0):
         """
         :param patience: how many epochs to wait before stopping when loss is
@@ -28,6 +29,7 @@ class EarlyStopping():
         self.counter = 0
         self.best_loss = None
         self.early_stop = False
+
     def __call__(self, val_loss):
         if self.best_loss == None:
             self.best_loss = val_loss
@@ -39,19 +41,19 @@ class EarlyStopping():
             self.counter += 1
             print(f"INFO: Early stopping counter {self.counter} of {self.patience}")
             if self.counter >= self.patience:
-                print('INFO: Early stopping')
+                print("INFO: Early stopping")
                 self.early_stop = True
 
+
 # Learning rate scheduler
-class LRScheduler():
+class LRScheduler:
     """
-    Learning rate scheduler. If the validation loss does not decrease for the 
+    Learning rate scheduler. If the validation loss does not decrease for the
     given number of `patience` epochs, then the learning rate will decrease by
     by given `factor`.
     """
-    def __init__(
-        self, optimizer, patience=5, min_lr=1e-6, factor=0.5
-    ):
+
+    def __init__(self, optimizer, patience=5, min_lr=1e-6, factor=0.5):
         """
         new_lr = old_lr * factor
         :param optimizer: the optimizer we are using
@@ -63,21 +65,23 @@ class LRScheduler():
         self.patience = patience
         self.min_lr = min_lr
         self.factor = factor
-        self.lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau( 
-                self.optimizer,
-                mode='min',
-                patience=self.patience,
-                factor=self.factor,
-                min_lr=self.min_lr,
-                verbose=True
-            )
+        self.lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            self.optimizer,
+            mode="min",
+            patience=self.patience,
+            factor=self.factor,
+            min_lr=self.min_lr,
+            verbose=True,
+        )
+
     def __call__(self, val_loss):
         self.lr_scheduler.step(val_loss)
+
 
 # Training
 def train(model, trainloader, optimizer, criterion, device):
     model.train()
-    print('Training')
+    print("Training")
     train_running_loss = 0.0
     train_running_correct = 0
     counter = 0
@@ -99,23 +103,24 @@ def train(model, trainloader, optimizer, criterion, device):
         loss.backward()
         # update the optimizer parameters
         optimizer.step()
-    
+
     # loss and accuracy for the complete epoch
     epoch_loss = train_running_loss / counter
-    epoch_acc = 100. * (train_running_correct / len(trainloader.dataset))
+    epoch_acc = 100.0 * (train_running_correct / len(trainloader.dataset))
     return epoch_loss, epoch_acc
+
 
 # Validation
 def validate(model, testloader, criterion, device):
     model.eval()
-    print('Validation')
+    print("Validation")
     valid_running_loss = 0.0
     valid_running_correct = 0
     counter = 0
     with torch.no_grad():
         for i, data in tqdm(enumerate(testloader), total=len(testloader)):
             counter += 1
-            
+
             image, labels = data
             image = image.to(device)
             labels = labels.to(device)
@@ -127,11 +132,12 @@ def validate(model, testloader, criterion, device):
             # calculate the accuracy
             _, preds = torch.max(outputs.data, 1)
             valid_running_correct += (preds == labels).sum().item()
-        
+
     # loss and accuracy for the complete epoch
     epoch_loss = valid_running_loss / counter
-    epoch_acc = 100. * (valid_running_correct / len(testloader.dataset))
+    epoch_acc = 100.0 * (valid_running_correct / len(testloader.dataset))
     return epoch_loss, epoch_acc
+
 
 def predict(image, model):
     """
@@ -189,6 +195,7 @@ def load_models(device, faceModelPath, maskModelPath):
     maskModel.eval()
 
     return maskModel, faceNet
+
 
 def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
     """
@@ -265,52 +272,45 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 
     # return a 2-tuple of the face locations and their corresponding
     # locations
-    print("[INFO] Find ", len(faces), ' mask faces')
+    print("[INFO] Find ", len(faces), " mask faces")
     return (faces, locs, preds)
 
-def save_model(epochs, model, optimizer, criterion, output_path = "models"):
+
+def save_model(epochs, model, optimizer, criterion, output_path="models"):
     """
     Function to save the trained model to disk.
     """
     if output_path is not None:
         os.makedirs(output_path, exist_ok=True)
-    torch.save({
-                'epoch': epochs,
-                'model_state_dict': model.state_dict(),
-                'optimizer_state_dict': optimizer.state_dict(),
-                'loss': criterion,
-                }, output_path+'model.pth')
-                
-def save_plots(train_acc, valid_acc, train_loss, valid_loss, output_path = "models"):
+    torch.save(
+        {
+            "epoch": epochs,
+            "model_state_dict": model.state_dict(),
+            "optimizer_state_dict": optimizer.state_dict(),
+            "loss": criterion,
+        },
+        output_path + "model.pth",
+    )
+
+
+def save_plots(train_acc, valid_acc, train_loss, valid_loss, output_path="models"):
     """
     Function to save the loss and accuracy plots to disk.
     """
     # accuracy plots
     plt.figure(figsize=(10, 7))
-    plt.plot(
-        train_acc, color='green', linestyle='-', 
-        label='train accuracy'
-    )
-    plt.plot(
-        valid_acc, color='blue', linestyle='-', 
-        label='validataion accuracy'
-    )
-    plt.xlabel('Epochs')
-    plt.ylabel('Accuracy')
+    plt.plot(train_acc, color="green", linestyle="-", label="train accuracy")
+    plt.plot(valid_acc, color="blue", linestyle="-", label="validataion accuracy")
+    plt.xlabel("Epochs")
+    plt.ylabel("Accuracy")
     plt.legend()
-    plt.savefig(output_path+'accuracy.png')
-    
+    plt.savefig(output_path + "accuracy.png")
+
     # loss plots
     plt.figure(figsize=(10, 7))
-    plt.plot(
-        train_loss, color='orange', linestyle='-', 
-        label='train loss'
-    )
-    plt.plot(
-        valid_loss, color='red', linestyle='-', 
-        label='validataion loss'
-    )
-    plt.xlabel('Epochs')
-    plt.ylabel('Loss')
+    plt.plot(train_loss, color="orange", linestyle="-", label="train loss")
+    plt.plot(valid_loss, color="red", linestyle="-", label="validataion loss")
+    plt.xlabel("Epochs")
+    plt.ylabel("Loss")
     plt.legend()
-    plt.savefig(output_path+'loss.png')
+    plt.savefig(output_path + "loss.png")

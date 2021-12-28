@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.optim as optim
 
 # Helper libraries
-from utils import save_model, save_plots, EarlyStopping, LRScheduler, train, validate 
+from utils import save_model, save_plots, EarlyStopping, LRScheduler, train, validate
 from dataset import get_transforms, get_data_loader
 from model import FaceMaskDetectorModel
 from dataset.utils import split_dataset
@@ -18,7 +18,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "--n_epochs", type=int, default=100, help="number of epochs of training"
     )
-    parser.add_argument("--batch_size", type=int, default=64, help="size of the batches")
+    parser.add_argument(
+        "--batch_size", type=int, default=64, help="size of the batches"
+    )
     parser.add_argument("--lr", type=float, default=0.0002, help="adam: learning rate")
     parser.add_argument(
         "--n_cpu",
@@ -91,7 +93,7 @@ if __name__ == "__main__":
     if sample_path is not None:
         os.makedirs(sample_path, exist_ok=True)
 
-    device = ('cuda' if torch.cuda.is_available() else 'cpu')
+    device = "cuda" if torch.cuda.is_available() else "cpu"
 
     model = FaceMaskDetectorModel().to(device)
     print(model)
@@ -100,31 +102,37 @@ if __name__ == "__main__":
     total_params = sum(p.numel() for p in model.parameters())
     print(f"{total_params:,} total parameters.")
     total_trainable_params = sum(
-        p.numel() for p in model.parameters() if p.requires_grad)
+        p.numel() for p in model.parameters() if p.requires_grad
+    )
     print(f"{total_trainable_params:,} training parameters.")
 
-
     # Optimizers
-    print('INFO: Initializing optimizer')
+    print("INFO: Initializing optimizer")
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
     # Learning rate
-    print('INFO: Initializing learning rate scheduler')
+    print("INFO: Initializing learning rate scheduler")
     scheduler = LRScheduler(optimizer)
 
     # Early Stopping
-    print('INFO: Initializing early stopping')
+    print("INFO: Initializing early stopping")
     early_stopping = EarlyStopping()
 
     # Loss function
-    print('INFO: Initializing criterion')
+    print("INFO: Initializing criterion")
     criterion = nn.CrossEntropyLoss()
 
     train_transform, valid_transform = get_transforms()
 
-    train_loader = get_data_loader(dataset_path + '/training', train_transform, batch_size, True, n_cpu)
-    valid_loader = get_data_loader(dataset_path + '/validation', valid_transform, batch_size, False, n_cpu)
-    test_loader = get_data_loader(dataset_path + '/testing', valid_transform, batch_size, False, n_cpu)
+    train_loader = get_data_loader(
+        dataset_path + "/training", train_transform, batch_size, True, n_cpu
+    )
+    valid_loader = get_data_loader(
+        dataset_path + "/validation", valid_transform, batch_size, False, n_cpu
+    )
+    test_loader = get_data_loader(
+        dataset_path + "/testing", valid_transform, batch_size, False, n_cpu
+    )
 
     # Lists to keep track of losses and accuracies
     train_loss, valid_loss = [], []
@@ -134,30 +142,36 @@ if __name__ == "__main__":
     print("[INFO] Start training... Models will be running on %s" % device)
     for epoch in range(n_epochs):
         print(f"[INFO]: Epoch {epoch+1} of {n_epochs}")
-        train_epoch_loss, train_epoch_acc = train(model, train_loader, 
-                                                optimizer, criterion, device)
-        valid_epoch_loss, valid_epoch_acc = validate(model, valid_loader,  
-                                                    criterion, device)
+        train_epoch_loss, train_epoch_acc = train(
+            model, train_loader, optimizer, criterion, device
+        )
+        valid_epoch_loss, valid_epoch_acc = validate(
+            model, valid_loader, criterion, device
+        )
 
         train_loss.append(train_epoch_loss)
         valid_loss.append(valid_epoch_loss)
         train_acc.append(train_epoch_acc)
         valid_acc.append(valid_epoch_acc)
-        print(f"Training loss: {train_epoch_loss:.3f}, training acc: {train_epoch_acc:.3f}")
-        print(f"Validation loss: {valid_epoch_loss:.3f}, validation acc: {valid_epoch_acc:.3f}")
-        print('-'*50)
+        print(
+            f"Training loss: {train_epoch_loss:.3f}, training acc: {train_epoch_acc:.3f}"
+        )
+        print(
+            f"Validation loss: {valid_epoch_loss:.3f}, validation acc: {valid_epoch_acc:.3f}"
+        )
+        print("-" * 50)
 
         scheduler(valid_epoch_loss)
         early_stopping(valid_epoch_loss)
         if early_stopping.early_stop:
             break
         time.sleep(5)
-        
+
     # save the trained model weights
     save_model(n_epochs, model, optimizer, criterion)
     # save the loss and accuracy plots
     save_plots(train_acc, valid_acc, train_loss, valid_loss)
-    print('TRAINING COMPLETE')
+    print("TRAINING COMPLETE")
 
     test_loss, test_acc = validate(model, test_loader, criterion, device)
     print(f"Dice loss: {test_loss:.3f}, dice acc: {test_acc:.3f}")
