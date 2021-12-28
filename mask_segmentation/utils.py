@@ -29,6 +29,7 @@ def predict(images, model):
             pred = model(t_image)
         pred = transforms.ToPILImage(mode="L")(torch.squeeze(pred, 0))
         preds.append(pred)
+    print("[INFO] Segmentation prediction done")
     return preds
 
 

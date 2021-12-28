@@ -157,5 +157,6 @@ def predict(
         size = (len(images[0]), len(images[0][0]))
     else:
         size = images[0].size
+    print("[INFO] CGan prediction done")
 
     return list(map(partial(get_np_result, size=size), images, masks, results))

@@ -75,17 +75,12 @@ def get_face_detector_model(path="model_weights/face_detector"):
     Returns:
         str: Path to the extracted FaceDetector model.
     """
-    print('before ', path)
     if os.path.exists(path):
         return path
-    print('after ', path)
-    print("/".join(path.split("/")[:-1]))
-    # os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
-    os.makedirs(path, exist_ok=True)
+    os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Downloading face detector model...")
     url = "https://link.eu1.storjshare.io/s/juv6co67qia72ieiqziwg4ou7lpq/datasets/face_detector.zip?wrap=0"
-    # return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
-    return dload.save_unzip(url, path, True)
+    return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
 def get_mask_detector_model(path="model_weights/mask_detector_model.pth"):
