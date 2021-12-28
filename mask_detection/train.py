@@ -10,7 +10,7 @@ import torch.optim as optim
 from utils import save_model, save_plots, EarlyStopping, LRScheduler, train, validate
 from dataset import get_transforms, get_data_loader
 from model import FaceMaskDetectorModel
-from dataset.utils import split_dataset
+from dataset import utils
 from ressources import get_dataset
 
 if __name__ == "__main__":
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     # Loading data
     if opt.load_data:
         dataset_path = get_dataset(dataset_path)
-        split_dataset(dataset_path, dataset_path)
+        utils.split_dataset(dataset_path, dataset_path)
     if output_path is not None:
         os.makedirs(output_path, exist_ok=True)
     if sample_path is not None:

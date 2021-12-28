@@ -10,6 +10,7 @@ from tqdm.auto import tqdm
 
 from mask_detection import model as mask_model
 
+
 # Early stopping
 class EarlyStopping:
     """
@@ -31,7 +32,7 @@ class EarlyStopping:
         self.early_stop = False
 
     def __call__(self, val_loss):
-        if self.best_loss == None:
+        if self.best_loss is None:
             self.best_loss = val_loss
         elif self.best_loss - val_loss > self.min_delta:
             self.best_loss = val_loss
