@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Principal packages
 import argparse
 import time
@@ -13,6 +12,7 @@ from mask_segmentation import utils as segmentation_utils
 from ccgan import generate as gan_utils
 from ressources import (
     replace_face,
+    get_face_detector_model,
     get_mask_detector_model,
     get_mask_segmentation_model,
     get_ccgan_model,
@@ -36,14 +36,15 @@ if __name__ == "__main__":
 
     args = vars(ap.parse_args())
 
+    get_face_detector_model()
     get_mask_detector_model()
     get_mask_segmentation_model()
     get_ccgan_model()
 
     maskModel, faceNet = mask_utils.load_models(
-        device, "mask_detection/face_detector", "model_weights/mask_detector_model.pth"
+        device, "model_weights/face_detector", "model_weights/mask_detector_model.pth"
     )
-    segmentation_model = segmentation_utils.load_models(
+    segmentation_model = segmentation_utils.load_model(
         device, "model_weights/model_mask_segmentation.pth"
     )
     generator_model = gan_utils.load_model("model_weights/ccgan-110.pth", device)

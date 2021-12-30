@@ -11,7 +11,7 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from datasets import ImageDataset
+from ccgan.datasets import ImageDataset
 from models import Discriminator, Generator
 from pathlib import Path
 from ressources import get_ccgan_model, get_celeba, get_masks_samples
@@ -60,13 +60,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset_path",
         type=str,
-        default="../dataset/celeba",
+        default="../datasets/celeba",
         help="Path to original dataset",
     )
     parser.add_argument(
         "--masks_path",
         type=str,
-        default="../dataset/masks_samples",
+        default="../datasets/masks_samples",
         help="Path to dataset of masks",
     )
     parser.add_argument(

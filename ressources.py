@@ -1,8 +1,8 @@
-import os
 import dload
+import os
 
 
-def get_celeba(path="dataset/celeba"):
+def get_celeba(path="datasets/celeba"):
     """
     Download and extract the CelebA dataset.
 
@@ -17,7 +17,7 @@ def get_celeba(path="dataset/celeba"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_dataset(path="dataset/dataset"):
+def get_dataset(path="datasets/dataset"):
     """
     Download and extract the masked dataset.
 
@@ -32,7 +32,7 @@ def get_dataset(path="dataset/dataset"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_masks_samples(path="dataset/masks_samples"):
+def get_masks_samples(path="datasets/masks_samples"):
     """
     Download and extract the celebA masks dataset.
 
@@ -60,6 +60,21 @@ def get_MaskTheFace(path="MaskTheFace"):
     print("Cloning MaskTheFace...")
     url = "https://github.com/aqeelanwar/MaskTheFace.git"
     return dload.git_clone(url, path)
+
+
+def get_face_detector_model(path="model_weights/face_detector"):
+    """
+    Download and extract the FaceDetector model.
+
+    Returns:
+        str: Path to the extracted FaceDetector model.
+    """
+    if os.path.exists(path):
+        return path
+    os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
+    print("Downloading face detector model...")
+    url = "https://link.eu1.storjshare.io/s/juv6co67qia72ieiqziwg4ou7lpq/datasets/face_detector.zip?wrap=0"
+    return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
 def get_mask_detector_model(path="model_weights/mask_detector_model.pth"):

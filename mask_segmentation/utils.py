@@ -29,10 +29,11 @@ def predict(images, model):
             pred = model(t_image)
         pred = transforms.ToPILImage(mode="L")(torch.squeeze(pred, 0))
         preds.append(pred)
+    print("[INFO] Segmentation prediction done")
     return preds
 
 
-def load_models(device, ModelPath="weigth.pth"):
+def load_model(device, ModelPath="weigth.pth"):
     """
     load our serialized face mask segmentation model from disk for evaluation
 
