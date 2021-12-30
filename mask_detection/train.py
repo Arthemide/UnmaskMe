@@ -10,7 +10,7 @@ import torch.optim as optim
 from utils import save_model, save_plots, EarlyStopping, LRScheduler, train, validate
 from dataset import get_transforms, get_data_loader
 from model import FaceMaskDetectorModel
-from dataset import utils
+from datasets import utils
 from ressources import get_dataset
 
 if __name__ == "__main__":
@@ -43,13 +43,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset_path",
         type=str,
-        default="../dataset/dataset",
+        default="../datasets/dataset",
         help="Path to original dataset",
     )
     parser.add_argument(
         "--masks_path",
         type=str,
-        default="../dataset/masks_samples",
+        default="../datasets/masks_samples",
         help="Path to dataset of masks",
     )
     parser.add_argument(

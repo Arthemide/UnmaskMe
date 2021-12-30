@@ -60,13 +60,13 @@ if __name__ == "__main__":
     parser.add_argument(
         "--dataset_path",
         type=str,
-        default="../dataset/celeba",
+        default="../datasets/celeba",
         help="Path to original dataset",
     )
     parser.add_argument(
         "--masks_path",
         type=str,
-        default="../dataset/masks_samples",
+        default="../datasets/masks_samples",
         help="Path to dataset of masks",
     )
     parser.add_argument(

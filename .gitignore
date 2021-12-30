@@ -21,7 +21,7 @@ ccgan/models/
 
 # Ignore downloadable files
 model_weights/
-dataset/celeba
-dataset/dataset
+datasets/celeba
+datasets/dataset
 MaskTheFace/
 dlib_models/

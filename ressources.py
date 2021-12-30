@@ -2,7 +2,7 @@ import dload
 import os
 
 
-def get_celeba(path="dataset/celeba"):
+def get_celeba(path="datasets/celeba"):
     """
     Download and extract the CelebA dataset.
 
@@ -17,7 +17,7 @@ def get_celeba(path="dataset/celeba"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_dataset(path="dataset/dataset"):
+def get_dataset(path="datasets/dataset"):
     """
     Download and extract the masked dataset.
 
@@ -32,7 +32,7 @@ def get_dataset(path="dataset/dataset"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_masks_samples(path="dataset/masks_samples"):
+def get_masks_samples(path="datasets/masks_samples"):
     """
     Download and extract the celebA masks dataset.
 
