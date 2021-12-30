@@ -11,7 +11,7 @@ currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
 
-from datasets import ImageDataset
+from ccgan.datasets import ImageDataset
 from models import Discriminator, Generator
 from pathlib import Path
 from ressources import get_ccgan_model, get_celeba, get_masks_samples
