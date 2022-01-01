@@ -1,4 +1,4 @@
-# Mask Segmentation
+# Mask Segmentation - INRIA Project
 
 ## Dataset
 
@@ -8,25 +8,18 @@ In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and 
 
 ## MaskTheFace
 
-we are using MasktheFace [project](https://github.com/aqeelanwar/MaskTheFace):
-to add covid mask on celeba dataset to create labels from the created picture.
+We are using [MasktheFace project](https://github.com/aqeelanwar/MaskTheFace) to add covid mask on celeba dataset to create labels from the created picture.
 
-## Model / utils
+## 🚀&nbsp; Installation
 
-model.py and utils.py are for the main function.
+- Refer to principal README, section installation.
 
-## Train
+## 🧑🏻‍💻&nbsp; Train
 
-if you want to retrain the segmentation model,in mask_segmentation directory you can run :
+- If you want to restart training of the segmentation model, be sure to be in mask_segmentation directory:
 
-``` bash
+```bash
 git clone https://github.com/aqeelanwar/MaskTheFace.git
-
 sed -i 's/ utils./ MaskTheFace.utils./' MaskTheFace/utils/aux_functions.py
-```
-
-then:
-
-``` bash
 python train.py
 ```

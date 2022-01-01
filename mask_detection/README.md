@@ -1,14 +1,13 @@
-# CCGan - INRIA Project
+# Mask detection - INRIA Project
 
-## Context-Conditional GAN
+## Mask detection on frame
 
-Sources for the [ccgan](https://github.com/eriklindernoren/PyTorch-GAN#context-conditional-gan)
+Sources for the ccgan: [here](https://github.com/eriklindernoren/PyTorch-GAN#context-conditional-gan)
 From the paper [Semi-supervised learning with context-conditional generative adversarial networks](https://arxiv.org/pdf/1611.06430.pdf) by Emily Denton, Sam Gross, Rob Fergus.
 
-## Dataset
+### Dataset
 
-You can download the [dataset](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
-
+You can download the dataset [here](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
 In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and extract it in the a new folder called **data** at the root of the project.
 
 ## 🚀&nbsp; Installation
@@ -17,8 +16,8 @@ In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and 
 
 ## 🧑🏻‍💻&nbsp; Train
 
-- To train ccgan:
+- To train face mask detection:
 
 ```bash
-python3 ccgan.py
+python3 train.py --image images/pic1.jpeg
 ```

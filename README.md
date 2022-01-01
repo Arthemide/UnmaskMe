@@ -94,13 +94,13 @@ streamlit run app.py
 - [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
 - [CCGan](https://github.com/Arthemide/UnmaskMe/blob/dev/ccgan/README.md)
 
-## 📖&nbsp; References
+<!-- ## 📖&nbsp; References
 
 ### Mask detection
 
 ### Mask segmentation
 
-### CcgaN
+### CcgaN -->
 
 ## 🙋🏻‍♂️&nbsp; Authors
 
