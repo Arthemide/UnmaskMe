@@ -1,23 +1,25 @@
-# dataset creation
+# Mask Segmentation - INRIA Project
 
-## celebA
+## Dataset
 
-We are using celebA dataset 202 000 image
+You can download the dataset [here](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
+
+In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and extract it in the a new folder called **data** at the root of the project.
 
 ## MaskTheFace
 
-we are using MasktheFace project:
-<https://github.com/aqeelanwar/MaskTheFace>
-to add covid mask on celeba dataset to create labels from the created picture.
+We are using [MasktheFace project](https://github.com/aqeelanwar/MaskTheFace) to add covid mask on celeba dataset to create labels from the created picture.
 
-## labels creation
+## 🚀&nbsp; Installation
 
-to create the labels we must compare the masked picture but because MasktheFace adapt the luminosity we cant juste compare pixel by pixel
+- Refer to principal README, section installation.
 
-## inria unmaskme
+## 🧑🏻‍💻&nbsp; Train
 
-runned on kaggle a unet models to segmentate the mask
+- If you want to restart training of the segmentation model, be sure to be in mask_segmentation directory:
 
-## unet_tensorflow/pytorch
-
-useless for now
+```bash
+git clone https://github.com/aqeelanwar/MaskTheFace.git
+sed -i 's/ utils./ MaskTheFace.utils./' MaskTheFace/utils/aux_functions.py
+python train.py
+```
