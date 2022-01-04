@@ -43,8 +43,8 @@ def get_masks_samples(path="datasets/masks_samples"):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Downloading dataset...")
-    # url = "https://link.eu1.storjshare.io/jxjaaumkj2zlbsadwkbu2dr4p7dq/datasets/dataset.zip?wrap=0"
-    # return dload.save_unzip(url, "/".join(path.split('/')[:-1]), True)
+    url = "https://link.eu1.storjshare.io/juhnpwlokhikmpmp3qczr2ukpega/datasets/mask.zip?wrap=0"
+    return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
 def get_MaskTheFace(path="MaskTheFace"):
