@@ -43,7 +43,7 @@ def get_masks_samples(path="datasets/masks_samples"):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Downloading dataset...")
-    url = "https://link.eu1.storjshare.io/juhnpwlokhikmpmp3qczr2ukpega/datasets%2Fmask.zip?wrap=0"
+    url = "https://link.eu1.storjshare.io/juhnpwlokhikmpmp3qczr2ukpega/datasets/mask.zip?wrap=0"
     return dload.save_unzip(url, "/".join(path.split('/')[:-1]), True)
 
 
