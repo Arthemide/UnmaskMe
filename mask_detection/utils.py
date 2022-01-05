@@ -323,3 +323,31 @@ def save_plots(train_acc, valid_acc, train_loss, valid_loss, output_path="models
     plt.ylabel("Loss")
     plt.legend()
     plt.savefig(output_path + "loss.png")
+
+
+def display_result(locations, predictions, frame):
+    # loop over the detected face locations and their corresponding locations
+    for (box, pred) in zip(locations, predictions):
+        # unpack the bounding box and predictions
+        (startX, startY, endX, endY) = box
+
+        # determine the class label and color we'll use to draw
+        # the bounding box and text
+        label = "No Mask" if pred else "Mask"
+        color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+
+        # include the probability in the label
+        # label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
+
+        # display the label and bounding box rectangle on the output frame
+        cv2.putText(
+            frame,
+            label,
+            (startX, startY - 10),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            0.45,
+            color,
+            2,
+        )
+        cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+    return frame
