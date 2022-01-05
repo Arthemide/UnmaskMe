@@ -1,4 +1,5 @@
 import dload
+import subprocess
 import os
 
 
@@ -62,7 +63,7 @@ def get_MaskTheFace(path="MaskTheFace"):
     return dload.git_clone(url, path)
 
 
-def get_YOLOv5(path="YOLOv5"):
+def get_YOLOv5(path="mask_detection/YOLOv5"):
     """
     Download and extract the YOLOv5 repository.
 
@@ -71,10 +72,10 @@ def get_YOLOv5(path="YOLOv5"):
     """
     if os.path.exists(path):
         return path
-    os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Cloning YOLOv5...")
-    url = "https://github.com/Arthemide/yolov5"
-    return dload.git_clone(url, path)
+    bashCommand = f'git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}'
+    subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    return path
 
 
 def get_face_detector_model(path="model_weights/face_detector"):
