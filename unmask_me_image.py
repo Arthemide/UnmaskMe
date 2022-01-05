@@ -8,6 +8,7 @@ from mask_detection import utils as mask_utils
 from mask_segmentation import utils as segmentation_utils
 from ccgan import generate as gan_utils
 from ressources import (
+    get_YOLOv5,
     replace_face,
     get_face_detector_model,
     get_mask_detector_model,
@@ -15,10 +16,23 @@ from ressources import (
     get_ccgan_model,
 )
 
+try:
+    get_face_detector_model()
+    get_mask_detector_model()
+    get_mask_segmentation_model()
+    get_ccgan_model()
+    get_YOLOv5()
+except:
+
+    print("error")
+    raise ValueError("Error while loading models")
+
+from mask_detection.YOLOv5.utils.detect import run_model
+
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("[INFO] Device set to: ", device)
+    print("[INFO] Device set to:", device)
 
     # read and preprocess the image
     ap = argparse.ArgumentParser()
@@ -31,17 +45,21 @@ if __name__ == "__main__":
         default=0.5,
         help="minimum probability to filter weak detections",
     )
+    ap.add_argument(
+        "-d",
+        "--data",
+        type=str,
+        default='./mask_detection/YOLOv5/data/mask_data.yaml',
+        help="yaml dataset file path",
+    )
+    ap.add_argument(
+        "-w",
+        "--weights",
+        type=str,
+        default='./model_weights/mask_face_detector.pt',
+        help="model weights path",
+    )
     args = vars(ap.parse_args())
-
-    try:
-        get_face_detector_model()
-        get_mask_detector_model()
-        get_mask_segmentation_model()
-        get_ccgan_model()
-    except:
-
-        print("error")
-        raise ValueError("Error while loading models")
 
     maskModel, faceNet = mask_utils.load_models(
         device, "model_weights/face_detector", "model_weights/mask_detector_model.pth"
@@ -54,9 +72,10 @@ if __name__ == "__main__":
 
     image = cv2.imread(args["image"])
     if image is not None:
-        (faces, locs, preds) = mask_utils.detect_and_predict_mask(
-            image, faceNet, maskModel, args["confidence"]
-        )
+        (faces, locs) = run_model(weights=args["weights"], data=args["data"], conf_thres=args["confidence"], iou_thres=0.45, max_det=1000, source=args["image"])
+        frame = mask_utils.display_result(locs, frame=image)
+        cv2.imshow("Output", frame)
+        cv2.waitKey(0)
 
         if len(faces) != 0:
             # segment the mask on faces
@@ -70,8 +89,9 @@ if __name__ == "__main__":
             image = replace_face(image, gan_preds, locs)
 
             # show the output image
-            cv2.imshow("Output", image)
-            cv2.waitKey(0)
+            print("[INFO] Job done, showing image")
+            # cv2.imshow("Output", image)
+            # cv2.waitKey(0)
     else:
         print("[INFO] Bad image path")
 
