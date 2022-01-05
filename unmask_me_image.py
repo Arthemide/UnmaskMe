@@ -6,6 +6,19 @@ import torch
 
 from utils import load_models, predict_face
 
+try:
+    get_face_detector_model()
+    get_mask_detector_model()
+    get_mask_segmentation_model()
+    get_ccgan_model()
+    get_YOLOv5()
+except:
+
+    print("error")
+    raise ValueError("Error while loading models")
+
+from mask_detection.YOLOv5.utils.detect import run_model
+
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
