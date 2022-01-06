@@ -341,5 +341,5 @@ def display_result(locations, predictions, frame):
             color,
             2,
         )
-        cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
+        cv2.rectangle(frame, (startX, startY), (endX, endY), color, 1)
     return frame
