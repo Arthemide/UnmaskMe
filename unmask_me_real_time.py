@@ -9,6 +9,20 @@ from imutils.video import VideoStream
 
 from utils import load_models, predict_face
 
+try:
+    get_face_detector_model()
+    get_mask_detector_model()
+    get_mask_segmentation_model()
+    get_ccgan_model()
+    get_YOLOv5_repo()
+    get_YOLOv5_model()
+except:
+
+    print("error")
+    raise ValueError("Error while loading models")
+
+
+from mask_detection.YOLOv5.utils.detect import run_model
 
 if __name__ == "__main__":
     # the computation device
@@ -26,7 +40,7 @@ if __name__ == "__main__":
         "-c",
         "--confidence",
         type=float,
-        default=0.5,
+        default=0.75,
         help="minimum probability to filter weak detections",
     )
     ap.add_argument(
