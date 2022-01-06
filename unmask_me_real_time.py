@@ -85,7 +85,7 @@ if __name__ == "__main__":
             conf_thres=args["confidence"],
             img0=frame,
         )
-    
+
         if len(faces) != 0:
             # segment the mask on faces
             faces_mask = segmentation_utils.predict(faces, segmentation_model)

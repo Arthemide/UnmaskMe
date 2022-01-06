@@ -74,7 +74,7 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
         return path
     print("Cloning YOLOv5...")
     bashCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
-    process =subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     process.wait()
     return path
 
