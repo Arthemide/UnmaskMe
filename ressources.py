@@ -48,7 +48,7 @@ def get_masks_samples(path="datasets/masks_samples"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_MaskTheFace(path="MaskTheFace"):
+def get_MaskTheFace(path="MaskTheFace/"):
     """
     Download and extract the MaskTheFace dataset.
 
@@ -74,7 +74,8 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
         return path
     print("Cloning YOLOv5...")
     bashCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
-    subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    process =subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
+    process.wait()
     return path
 
 
@@ -91,7 +92,6 @@ def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
     print("Downloading YOLOv5 model...")
     url = "https://link.eu1.storjshare.io/juktaddoxro75bg4irc55ewerevq/datasets/model_mask_detector.pth?wrap=0"
     return dload.save(url, path)
-
 
 
 def get_face_detector_model(path="model_weights/face_detector"):

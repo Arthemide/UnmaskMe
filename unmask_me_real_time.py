@@ -17,7 +17,7 @@ from ressources import (
     get_mask_segmentation_model,
     get_ccgan_model,
     get_YOLOv5_repo,
-    get_YOLOv5_model
+    get_YOLOv5_model,
 )
 
 try:
@@ -83,7 +83,8 @@ if __name__ == "__main__":
             weights="./model_weights/mask_face_detector.pt",
             data="./mask_detection/YOLOv5/data/mask_data.yaml",
             conf_thres=args["confidence"],
-            img0=frame)
+            img0=frame,
+        )
     
         if len(faces) != 0:
             # segment the mask on faces

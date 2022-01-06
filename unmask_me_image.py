@@ -4,7 +4,6 @@ import argparse
 import cv2
 import torch
 
-from mask_detection import utils as mask_utils
 from mask_segmentation import utils as segmentation_utils
 from ccgan import generate as gan_utils
 from ressources import (
@@ -14,7 +13,7 @@ from ressources import (
     get_mask_segmentation_model,
     get_ccgan_model,
     get_YOLOv5_repo,
-    get_YOLOv5_model
+    get_YOLOv5_model,
 )
 
 try:
@@ -61,7 +60,8 @@ if __name__ == "__main__":
             weights="./model_weights/mask_face_detector.pt",
             data="./mask_detection/YOLOv5/data/mask_data.yaml",
             conf_thres=args["confidence"],
-            source=args["image"])
+            source=args["image"],
+        )
 
         if len(faces) != 0:
             # segment the mask on faces
