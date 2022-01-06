@@ -16,13 +16,29 @@ from ressources import (
     get_mask_detector_model,
     get_mask_segmentation_model,
     get_ccgan_model,
+    get_YOLOv5_repo,
+    get_YOLOv5_model
 )
 
+try:
+    get_face_detector_model()
+    get_mask_detector_model()
+    get_mask_segmentation_model()
+    get_ccgan_model()
+    get_YOLOv5_repo()
+    get_YOLOv5_model()
+except:
+
+    print("error")
+    raise ValueError("Error while loading models")
+
+
+from mask_detection.YOLOv5.utils.detect import run_model
 
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("[INFO] Device set to: ", device)
+    print("[INFO] Device set to:", device)
 
     # construct the argument parser and parse the arguments
     ap = argparse.ArgumentParser()
@@ -30,16 +46,11 @@ if __name__ == "__main__":
         "-c",
         "--confidence",
         type=float,
-        default=0.5,
+        default=0.75,
         help="minimum probability to filter weak detections",
     )
 
     args = vars(ap.parse_args())
-
-    get_face_detector_model()
-    get_mask_detector_model()
-    get_mask_segmentation_model()
-    get_ccgan_model()
 
     maskModel, faceNet = mask_utils.load_models(
         device, "model_weights/face_detector", "model_weights/mask_detector_model.pth"
@@ -68,6 +79,12 @@ if __name__ == "__main__":
             frame, faceNet, maskModel, args["confidence"]
         )
 
+        (faces, locs) = run_model(
+            weights="./model_weights/mask_face_detector.pt",
+            data="./mask_detection/YOLOv5/data/mask_data.yaml",
+            conf_thres=args["confidence"],
+            img0=frame)
+    
         if len(faces) != 0:
             # segment the mask on faces
             faces_mask = segmentation_utils.predict(faces, segmentation_model)
@@ -79,7 +96,7 @@ if __name__ == "__main__":
 
             image = replace_face(frame, gan_preds, locs)
 
-            # show the output frame
+        # show the output frame
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 
