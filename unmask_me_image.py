@@ -11,7 +11,8 @@ try:
     get_mask_detector_model()
     get_mask_segmentation_model()
     get_ccgan_model()
-    get_YOLOv5()
+    get_YOLOv5_repo()
+    get_YOLOv5_model()
 except:
 
     print("error")
@@ -37,7 +38,7 @@ if __name__ == "__main__":
         "-c",
         "--confidence",
         type=float,
-        default=0.5,
+        default=0.75,
         help="minimum probability to filter weak detections",
     )
     ap.add_argument(
