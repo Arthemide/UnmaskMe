@@ -63,19 +63,35 @@ def get_MaskTheFace(path="MaskTheFace"):
     return dload.git_clone(url, path)
 
 
-def get_YOLOv5(path="mask_detection/YOLOv5"):
+def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
     """
     Download and extract the YOLOv5 repository.
 
     Returns:
-        str: Path to the extracted MaskTheFace repository.
+        str: Path to the extracted YOLOv5 repository.
     """
     if os.path.exists(path):
         return path
     print("Cloning YOLOv5...")
-    bashCommand = f'git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}'
+    bashCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
     subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
     return path
+
+
+def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
+    """
+    Download and extract the YOLOv5 model.
+
+    Returns:
+        str: Path to the extracted YOLOv5 model.
+    """
+    if os.path.exists(path):
+        return path
+    os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
+    print("Downloading YOLOv5 model...")
+    url = "https://link.eu1.storjshare.io/juktaddoxro75bg4irc55ewerevq/datasets/model_mask_detector.pth?wrap=0"
+    return dload.save(url, path)
+
 
 
 def get_face_detector_model(path="model_weights/face_detector"):
