@@ -1,5 +1,10 @@
 import torch
 from torchvision import transforms
+import numpy as np
+from skimage import morphology
+from PIL import Image
+from matplotlib import pyplot as plt
+
 
 from mask_segmentation.model import UNet
 
@@ -29,6 +34,12 @@ def predict(images, model):
         with torch.no_grad():
             pred = model(t_image)
         pred = transforms.ToPILImage(mode="L")(torch.squeeze(pred, 0))
+        pred = pred.convert("1")
+        img = np.asarray(pred)
+        img = morphology.remove_small_holes(img, 200, 10).astype(int)
+        img[img == 1] = 254
+        pred = Image.fromarray(np.uint8(img), mode="L")
+        pred = pred.convert("1")
         preds.append(pred)
     print("[INFO] Segmentation prediction done")
     return preds
