@@ -103,7 +103,7 @@ def get_mask_segmentation_model(path="model_weights/model_mask_segmentation.pth"
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Downloading mask segmentation model...")
-    url = "https://link.eu1.storjshare.io/jxab23e5luqjapxi72yweedmoumq/datasets/model_mask_segmentation.pth?wrap=0"
+    url = "https://link.eu1.storjshare.io/juscxcz7e3k3hsw7h3tgocew477q/datasets/model_mask_segmentation.pth?wrap=0"
     return dload.save(url, path)
 
 
