@@ -32,7 +32,7 @@ def get_dataset(path="datasets/dataset"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_masks_samples(path="datasets/masks_samples"):
+def get_masks_samples(path="datasets/mask"):
     """
     Download and extract the celebA masks dataset.
 
@@ -42,7 +42,7 @@ def get_masks_samples(path="datasets/masks_samples"):
     if os.path.exists(path):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
-    print("Downloading dataset...")
+    print("Downloading mask samples dataset...")
     url = "https://link.eu1.storjshare.io/juhnpwlokhikmpmp3qczr2ukpega/datasets/mask.zip?wrap=0"
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 

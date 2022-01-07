@@ -2,7 +2,7 @@ import cv2
 import numpy
 import torch
 import torchvision.transforms as transforms
-from ccgan.datasets import MaskDataset
+from ccgan.dataset import MaskDataset
 from ccgan.models import Generator
 from ccgan.utils import get_transforms
 from functools import partial
