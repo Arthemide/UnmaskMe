@@ -23,5 +23,6 @@ ccgan/models/
 model_weights/
 datasets/celeba
 datasets/dataset
+datasets/mask
 MaskTheFace/
 dlib_models/
