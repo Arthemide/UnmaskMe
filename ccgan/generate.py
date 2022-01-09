@@ -56,10 +56,10 @@ def cv2_to_PIL(img):
 
 
 def get_color(img):
-    l = 80 * img.shape[1] // img.shape[0]
-    y = int(img.shape[1] // 2 - l // 2)
-    x = int(img.shape[0] // 2 * 0.8 - l // 2)
-    img = img[x : x + l, y : y + l]
+    length = 80 * img.shape[1] // img.shape[0]
+    y = int(img.shape[1] // 2 - length // 2)
+    x = int(img.shape[0] // 2 * 0.8 - length // 2)
+    img = img[x : x + length, y : y + length]
     average = img.mean(axis=0).mean(axis=0)
     return np.uint8(average)
 
