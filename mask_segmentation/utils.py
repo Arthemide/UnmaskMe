@@ -3,7 +3,6 @@ from torchvision import transforms
 import numpy as np
 from skimage import morphology
 from PIL import Image
-from matplotlib import pyplot as plt
 
 
 from mask_segmentation.model import UNet
