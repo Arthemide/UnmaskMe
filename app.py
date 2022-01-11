@@ -5,7 +5,6 @@ import cv2
 import torch
 import av
 import streamlit as st
-import torch
 from PIL import Image
 from streamlit_webrtc import webrtc_streamer
 
