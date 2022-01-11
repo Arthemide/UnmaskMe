@@ -17,7 +17,12 @@ from pathlib import Path
 from ressources import get_ccgan_model, get_celeba, get_masks_samples
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
-from ccgan.utils import get_masked_face, get_transforms, save_sample, weights_init_normal
+from ccgan.utils import (
+    get_masked_face,
+    get_transforms,
+    save_sample,
+    weights_init_normal,
+)
 
 
 if __name__ == "__main__":
