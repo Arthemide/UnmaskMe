@@ -6,6 +6,7 @@ data
 
 mask_detection/mask_dataset
 mask_detection/dataset
+mask_detection/YOLOv5
 
 */.ipynb_checkpoints
 input/*
