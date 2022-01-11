@@ -12,5 +12,5 @@ body {
 }
 
 /* Removing Main Menubar and Footer */
-#MainMenu {visibility: hidden;}
-footer {visibility: hidden;}
+#main-menu { visibility: hidden; }
+footer { visibility: hidden; }
