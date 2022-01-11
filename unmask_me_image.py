@@ -20,6 +20,11 @@ if __name__ == "__main__":
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("[INFO] Device set to: ", device)
 
+    face_detector_path = "model_weights/face_detector"
+    mask_detector_model_path = "model_weights/mask_detector_model.pth"
+    mask_segmentation_model_path = "model_weights/model_mask_segmentation.pth"
+    ccgan_path = "model_weights/ccgan-110.pth"
+
     # read and preprocess the image
     ap = argparse.ArgumentParser()
     # construct the argument parser and parse the arguments
@@ -31,25 +36,49 @@ if __name__ == "__main__":
         default=0.5,
         help="minimum probability to filter weak detections",
     )
+    ap.add_argument(
+        "--face_detector_path",
+        type=str,
+        default=face_detector_path,
+        help="Path to face detector model",
+    )
+    ap.add_argument(
+        "--mask_detector_model_path",
+        type=str,
+        default=mask_detector_model_path,
+        help="Path to mask detector model",
+    )
+    ap.add_argument(
+        "--mask_segmentation_model_path",
+        type=str,
+        default=mask_segmentation_model_path,
+        help="Path to mask segmentation model",
+    )
+    ap.add_argument(
+        "--ccgan_path", type=str, default=ccgan_path, help="Path to ccgan model"
+    )
     args = vars(ap.parse_args())
 
     try:
-        get_face_detector_model()
-        get_mask_detector_model()
-        get_mask_segmentation_model()
-        get_ccgan_model()
+        if face_detector_path == args["face_detector_path"]:
+            get_face_detector_model()
+        if mask_detector_model_path == args["mask_detector_model_path"]:
+            get_mask_detector_model()
+        if mask_segmentation_model_path == args["mask_segmentation_model_path"]:
+            get_mask_segmentation_model()
+        if ccgan_path == args["ccgan_path"]:
+            get_ccgan_model()
     except:
-
         print("error")
         raise ValueError("Error while loading models")
 
     maskModel, faceNet = mask_utils.load_models(
-        device, "model_weights/face_detector", "model_weights/mask_detector_model.pth"
+        device, args["face_detector_path"], args["mask_detector_model_path"]
     )
     segmentation_model = segmentation_utils.load_model(
-        device, "model_weights/model_mask_segmentation.pth"
+        device, args["mask_segmentation_model_path"]
     )
-    generator_model = gan_utils.load_model("model_weights/ccgan-110.pth", device)
+    generator_model = gan_utils.load_model(args["ccgan_path"], device)
     print("[INFO] Models loaded")
 
     image = cv2.imread(args["image"])

@@ -80,12 +80,12 @@ class MaskDataset(Dataset):
 
     def __getitem__(self, index):
 
-        mask_applied = self.apply(
+        mask_applied, mask_lr = self.apply(
             self.images[index % len(self.images)], self.masks[index % len(self.masks)]
         )
 
         x = self.transform_x(mask_applied)
-        x_lr = self.transform_lr(mask_applied)
+        x_lr = self.transform_lr(mask_lr)
 
         return {"x": x, "x_lr": x_lr}
 
