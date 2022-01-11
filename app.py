@@ -4,7 +4,6 @@ import argparse
 import cv2
 import torch
 import av
-import cv2
 import streamlit as st
 import torch
 from PIL import Image
@@ -60,10 +59,10 @@ def mask_image(image):
     ccgan_path = "model_weights/ccgan-110.pth"
 
     try:
-            get_face_detector_model()
-            get_mask_detector_model()
-            get_mask_segmentation_model()
-            get_ccgan_model()
+        get_face_detector_model()
+        get_mask_detector_model()
+        get_mask_segmentation_model()
+        get_ccgan_model()
     except:
         print("error")
         raise ValueError("Error while loading models")
