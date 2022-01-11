@@ -18,7 +18,7 @@ from ressources import (
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("[INFO] Device set to: ", device)
+    print("[INFO] Device set to:", device)
 
     face_detector_path = "model_weights/face_detector"
     mask_detector_model_path = "model_weights/mask_detector_model.pth"

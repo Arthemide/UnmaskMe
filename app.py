@@ -1,15 +1,38 @@
-import codecs
-import os
+# Principal packages
+import argparse
 
+import cv2
+import torch
 import av
 import cv2
-import numpy as np
 import streamlit as st
-import streamlit.components.v1 as stc
 import torch
-import utils
-from PIL import Image, ImageEnhance
+from PIL import Image
 from streamlit_webrtc import webrtc_streamer
+
+from mask_detection import utils as mask_utils
+from mask_segmentation import utils as segmentation_utils
+from ccgan import generate as gan_utils
+from ressources import (
+    replace_face,
+    get_face_detector_model,
+    get_mask_detector_model,
+    get_mask_segmentation_model,
+    get_ccgan_model,
+)
+
+# read and preprocess the image
+ap = argparse.ArgumentParser()
+# construct the argument parser and parse the arguments
+ap.add_argument("-i", "--image", type=str, help="image path")
+ap.add_argument(
+    "-c",
+    "--confidence",
+    type=float,
+    default=0.5,
+    help="minimum probability to filter weak detections",
+)
+args = vars(ap.parse_args())
 
 # Setting custom Page Title and Icon with changed layout and sidebar state
 st.set_page_config(
@@ -29,13 +52,46 @@ def local_css(file_name):
 def mask_image(image):
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("[INFO] Device set to: ", device)
+    print("[INFO] Device set to:", device)
 
-    maskModel, faceNet = utils.load_models(device, "face_detector")
+    face_detector_path = "model_weights/face_detector"
+    mask_detector_model_path = "model_weights/mask_detector_model.pth"
+    mask_segmentation_model_path = "model_weights/model_mask_segmentation.pth"
+    ccgan_path = "model_weights/ccgan-110.pth"
 
-    (_, locs, preds) = utils.detect_and_predict_mask(image, faceNet, maskModel, 0.5)
+    try:
+            get_face_detector_model()
+            get_mask_detector_model()
+            get_mask_segmentation_model()
+            get_ccgan_model()
+    except:
+        print("error")
+        raise ValueError("Error while loading models")
 
-    image = utils.display_result(locs, preds, image)
+    maskModel, faceNet = mask_utils.load_models(
+        device, face_detector_path, mask_detector_model_path
+    )
+    segmentation_model = segmentation_utils.load_model(
+        device, mask_segmentation_model_path
+    )
+    generator_model = gan_utils.load_model(ccgan_path, device)
+    print("[INFO] Models loaded")
+
+    if image is not None:
+        (faces, locs, preds) = mask_utils.detect_and_predict_mask(
+            image, faceNet, maskModel, args["confidence"]
+        )
+
+        if len(faces) != 0:
+            # segment the mask on faces
+            faces_mask = segmentation_utils.predict(faces, segmentation_model)
+
+            # predict the face underneath the mask
+            gan_preds = gan_utils.predict(
+                generator=generator_model, images=faces, masks=faces_mask
+            )
+
+            image = replace_face(image, gan_preds, locs)
 
     return image
 

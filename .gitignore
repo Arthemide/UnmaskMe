@@ -17,6 +17,7 @@ ccgan/images/
 ccgan/models/
 
 # Ignore downloadable files
+images/out.jpg
 model_weights/
 datasets/celeba
 datasets/dataset
