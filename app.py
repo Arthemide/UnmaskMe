@@ -98,12 +98,18 @@ def unmask_frame(image, faceNet, maskModel, segmentation_model, generator_model)
 
 
 class VideoProcessor:
+    def __init__(self) -> None:
+        self.faceNet = None
+        self.maskModel = None
+        self.segmentation_model = None
+        self.generator_model = None
+
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
+        if self.faceNet is not None and self.maskModel is not None and self.segmentation_model is not None and self.generator_model is not None:
+            img = unmask_frame(img, self.faceNet, self.maskModel, self.segmentation_model, self.generator_model)
 
-        new_image = unmask_frame(img)
-
-        return av.VideoFrame.from_ndarray(new_image, format="bgr24")
+        return av.VideoFrame.from_ndarray(img, format="bgr24")
 
 
 def set_streamlit_app():
@@ -144,7 +150,11 @@ def set_streamlit_app():
         st.markdown(
             '<h2 align="center">Detection on Webcam</h2>', unsafe_allow_html=True
         )
-        webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
-
+        ctx = webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
+        if ctx.video_processor:
+            ctx.video_processor.faceNet = faceNet
+            ctx.video_processor.maskModel = maskModel
+            ctx.video_processor.segmentation_model = segmentation_model
+            ctx.video_processor.generator_model = generator_model
 
 set_streamlit_app()
