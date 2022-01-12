@@ -46,6 +46,7 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def load_models():
     st.write("Cache miss: load_models running")
@@ -77,6 +78,7 @@ def load_models():
     print("[INFO] Models loaded")
     return faceNet, maskModel, segmentation_model, generator_model
 
+
 def unmask_frame(image, faceNet, maskModel, segmentation_model, generator_model):
     if image is not None:
         (faces, locs, preds) = mask_utils.detect_and_predict_mask(
@@ -106,8 +108,19 @@ class VideoProcessor:
 
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
-        if self.faceNet is not None and self.maskModel is not None and self.segmentation_model is not None and self.generator_model is not None:
-            img = unmask_frame(img, self.faceNet, self.maskModel, self.segmentation_model, self.generator_model)
+        if (
+            self.faceNet is not None
+            and self.maskModel is not None
+            and self.segmentation_model is not None
+            and self.generator_model is not None
+        ):
+            img = unmask_frame(
+                img,
+                self.faceNet,
+                self.maskModel,
+                self.segmentation_model,
+                self.generator_model,
+            )
 
         return av.VideoFrame.from_ndarray(img, format="bgr24")
 
@@ -139,7 +152,13 @@ def set_streamlit_app():
                 unsafe_allow_html=True,
             )
             if st.button("Process"):
-                new_image = unmask_frame(cv2.imread("./images/out.jpg"), faceNet, maskModel, segmentation_model, generator_model)
+                new_image = unmask_frame(
+                    cv2.imread("./images/out.jpg"),
+                    faceNet,
+                    maskModel,
+                    segmentation_model,
+                    generator_model,
+                )
                 st.image(
                     cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB),
                     caption="cool",
@@ -156,5 +175,6 @@ def set_streamlit_app():
             ctx.video_processor.maskModel = maskModel
             ctx.video_processor.segmentation_model = segmentation_model
             ctx.video_processor.generator_model = generator_model
+
 
 set_streamlit_app()
