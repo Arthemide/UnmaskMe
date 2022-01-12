@@ -46,8 +46,9 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-
-def mask_image(image):
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
+def load_models():
+    st.write("Cache miss: load_models running")
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("[INFO] Device set to:", device)
@@ -74,7 +75,9 @@ def mask_image(image):
     )
     generator_model = gan_utils.load_model(ccgan_path, device)
     print("[INFO] Models loaded")
+    return faceNet, maskModel, segmentation_model, generator_model
 
+def unmask_frame(image, faceNet, maskModel, segmentation_model, generator_model):
     if image is not None:
         (faces, locs, preds) = mask_utils.detect_and_predict_mask(
             image, faceNet, maskModel, args["confidence"]
@@ -98,12 +101,12 @@ class VideoProcessor:
     def recv(self, frame):
         img = frame.to_ndarray(format="bgr24")
 
-        new_image = mask_image(img)
+        new_image = unmask_frame(img)
 
         return av.VideoFrame.from_ndarray(new_image, format="bgr24")
 
 
-def mask_detection():
+def set_streamlit_app():
     local_css("css/styles.css")
     st.markdown(
         '<h1 align="center">😷 Face Mask Detection 😚</h1>', unsafe_allow_html=True
@@ -113,6 +116,7 @@ def mask_detection():
     st.set_option("deprecation.showfileUploaderEncoding", False)
     st.sidebar.markdown("# Mask Detection on?")
     choice = st.sidebar.selectbox("Choose among the given options:", activities)
+    faceNet, maskModel, segmentation_model, generator_model = load_models()
 
     if choice == "Image":
         st.markdown(
@@ -129,7 +133,7 @@ def mask_detection():
                 unsafe_allow_html=True,
             )
             if st.button("Process"):
-                new_image = mask_image(cv2.imread("./images/out.jpg"))
+                new_image = unmask_frame(cv2.imread("./images/out.jpg"), faceNet, maskModel, segmentation_model, generator_model)
                 st.image(
                     cv2.cvtColor(new_image, cv2.COLOR_BGR2RGB),
                     caption="cool",
@@ -143,4 +147,4 @@ def mask_detection():
         webrtc_streamer(key="example", video_processor_factory=VideoProcessor)
 
 
-mask_detection()
+set_streamlit_app()
