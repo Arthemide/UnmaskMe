@@ -1,0 +1,26 @@
+#env
+.unmaskme
+__pycache__
+data
+.vscode
+
+mask_detection/mask_dataset
+mask_detection/dataset
+mask_detection/YOLOv5
+
+*/.ipynb_checkpoints
+input/*
+mask_segmentation/data
+mask_segmentation/weigth.pth
+
+ccgan/images/
+ccgan/models/
+
+# Ignore downloadable files
+images/out.jpg
+model_weights/
+datasets/celeba
+datasets/dataset
+datasets/mask
+MaskTheFace/
+dlib_models/
