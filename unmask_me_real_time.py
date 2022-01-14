@@ -7,22 +7,13 @@ import imutils
 import torch
 from imutils.video import VideoStream
 
-from mask_detection import utils as mask_utils
-from mask_segmentation import utils as segmentation_utils
-from ccgan import generate as gan_utils
-from ressources import (
-    replace_face,
-    get_face_detector_model,
-    get_mask_detector_model,
-    get_mask_segmentation_model,
-    get_ccgan_model,
-)
+from utils import load_models, predict_face
 
 
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print("[INFO] Device set to: ", device)
+    print("[INFO] Device set to:", device)
 
     face_detector_path = "model_weights/face_detector"
     mask_detector_model_path = "model_weights/mask_detector_model.pth"
@@ -62,23 +53,14 @@ if __name__ == "__main__":
 
     args = vars(ap.parse_args())
 
-    if face_detector_path == args["face_detector_path"]:
-        get_face_detector_model()
-    if mask_detector_model_path == args["mask_detector_model_path"]:
-        get_mask_detector_model()
-    if mask_segmentation_model_path == args["mask_segmentation_model_path"]:
-        get_mask_segmentation_model()
-    if ccgan_path == args["ccgan_path"]:
-        get_ccgan_model()
-
-    maskModel, faceNet = mask_utils.load_models(
-        device, args["face_detector_path"], args["mask_detector_model_path"]
+    maskModel, faceNet, segmentation_model, generator_model = load_models(
+        args,
+        face_detector_path,
+        mask_detector_model_path,
+        mask_segmentation_model_path,
+        ccgan_path,
+        device,
     )
-    segmentation_model = segmentation_utils.load_model(
-        device, args["mask_segmentation_model_path"]
-    )
-    generator_model = gan_utils.load_model(args["ccgan_path"], device)
-    print("[INFO] Models loaded")
 
     # initialize the video stream and allow the camera sensor to warm up
     print("[INFO] starting video stream...")
@@ -92,24 +74,16 @@ if __name__ == "__main__":
         frame = vs.read()
         frame = imutils.resize(frame, width=400)
 
-        # detect faces in the frame and determine if they are wearing a
-        # face mask or not
-        (faces, locs, preds) = mask_utils.detect_and_predict_mask(
-            frame, faceNet, maskModel, args["confidence"]
+        predict_face(
+            frame,
+            faceNet,
+            maskModel,
+            segmentation_model,
+            generator_model,
+            args["confidence"],
         )
 
-        if len(faces) != 0:
-            # segment the mask on faces
-            faces_mask = segmentation_utils.predict(faces, segmentation_model)
-
-            # predict the face underneath the mask
-            gan_preds = gan_utils.predict(
-                generator=generator_model, images=faces, masks=faces_mask
-            )
-
-            image = replace_face(frame, gan_preds, locs)
-
-            # show the output frame
+        # show the output frame
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
 

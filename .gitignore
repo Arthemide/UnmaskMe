@@ -1,25 +1,23 @@
 #env
-.detection_env
+.unmaskme
 __pycache__
 data
 .vscode
 
-unmaskme-env/
-
-mask_detection/.ipynb_checkpoints
-
 mask_detection/mask_dataset
 mask_detection/dataset
-*/.ipynb_checkspoints
+mask_detection/YOLOv5
+
+*/.ipynb_checkpoints
 input/*
-data/*
-mask_segmentation/data/*
-mask_segmentation/.ipynb_checkpoints
+mask_segmentation/data
+mask_segmentation/weigth.pth
 
 ccgan/images/
 ccgan/models/
 
 # Ignore downloadable files
+images/out.jpg
 model_weights/
 datasets/celeba
 datasets/dataset

@@ -281,7 +281,7 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
 
     # return a 2-tuple of the face locations and their corresponding
     # locations
-    print("[INFO] Find ", len(faces), " mask faces")
+    print("[INFO] Find", len(faces), "mask faces")
     return (faces, locs, preds)
 
 
