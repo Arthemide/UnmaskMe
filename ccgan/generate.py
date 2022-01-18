@@ -1,8 +1,8 @@
 import cv2
-import numpy
+import numpy as np
 import torch
 import torchvision.transforms as transforms
-from ccgan.datasets import MaskDataset
+from ccgan.dataset import MaskDataset
 from ccgan.models import Generator
 from ccgan.utils import get_transforms
 from functools import partial
@@ -55,6 +55,15 @@ def cv2_to_PIL(img):
     return Image.fromarray(img)
 
 
+def get_color(img):
+    length = 80 * img.shape[1] // img.shape[0]
+    y = int(img.shape[1] // 2 - length // 2)
+    x = int(img.shape[0] // 2 * 0.8 - length // 2)
+    img = img[x : x + length, y : y + length]
+    average = img.mean(axis=0).mean(axis=0)
+    return np.uint8(average)
+
+
 def get_mask_applied(img, mask):
     """
     Applies a mask to an image.
@@ -66,10 +75,14 @@ def get_mask_applied(img, mask):
     Returns:
         The masked image.
     """
+    average = get_color(img)
     img = cv2_to_PIL(img)
     mask = mask.resize(img.size)
     white = Image.new("L", img.size, 255)
-    return Image.composite(white, img, mask)
+    average_color = Image.new("RGB", img.size, (average[2], average[1], average[0]))
+    res = Image.composite(white, img, mask)
+    average_color = Image.composite(average_color, img, mask)
+    return (res, average_color)
 
 
 def get_np_result(image, mask, img, size):
@@ -99,8 +112,7 @@ def get_np_result(image, mask, img, size):
 
     pil_image = Image.composite(img, cv2_to_PIL(image), mask)
 
-    res = cv2.cvtColor(numpy.array(pil_image), cv2.COLOR_BGR2RGB)
-
+    res = cv2.cvtColor(np.array(pil_image), cv2.COLOR_BGR2RGB)
     mask.close()
     pil_image.close()
 
@@ -153,7 +165,7 @@ def predict(
             img = generator(Variable(b["x"]), Variable(b["x_lr"]))
             results.append(img)
 
-    if isinstance(images[0], numpy.ndarray):
+    if isinstance(images[0], np.ndarray):
         size = (len(images[0]), len(images[0][0]))
     else:
         size = images[0].size

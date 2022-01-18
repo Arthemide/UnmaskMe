@@ -244,6 +244,14 @@ def detect_and_predict_mask(frame, faceNet, maskModel, default_confidence):
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
+            # up sizing the frame to have better result for the mask segmentation
+            shiftX = endX - startX
+            shiftY = endY - startY
+            startX -= int(shiftX * 0.15)
+            endX += int(shiftX * 0.15)
+            startY -= int(shiftY * 0.35)
+            endY += int(shiftY * 0.25)
+
             # ensure the bounding boxes fall within the dimensions of
             # the frame
             if startX > w or endX > w or startY > h or endY > h:
