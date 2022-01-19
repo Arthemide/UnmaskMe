@@ -73,9 +73,12 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
     if os.path.exists(path):
         return path
     print("Cloning YOLOv5...")
-    bashCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
-    process = subprocess.Popen(bashCommand.split(), stdout=subprocess.PIPE)
-    process.wait()
+    cloneCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
+    cloneProcess = subprocess.Popen(cloneCommand.split(), stdout=subprocess.PIPE)
+    cloneProcess.wait()
+    requCommand = "pip install -r mask_detection/YOLOv5/requirements.txt"
+    requProcess = subprocess.Popen(requCommand.split(), stdout=subprocess.PIPE)
+    requProcess.wait()
     return path
 
 
