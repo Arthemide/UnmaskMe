@@ -1,14 +1,11 @@
-from mask_detection import utils as mask_utils
 from mask_segmentation import utils as segmentation_utils
 from ccgan import generate as gan_utils
 from ressources import (
     replace_face,
-    get_face_detector_model,
-    get_mask_detector_model,
     get_mask_segmentation_model,
     get_ccgan_model,
     get_YOLOv5_repo,
-    get_YOLOv5_model
+    get_YOLOv5_model,
 )
 
 try:
@@ -19,6 +16,7 @@ except:
     raise ValueError("Error while loading models")
 
 from mask_detection.YOLOv5.utils.detect import run_model
+
 
 def load_models(
     args,
@@ -49,15 +47,21 @@ def load_models(
 
 
 def predict_face(
-    image, segmentation_model, generator_model, yolo_model_path, confidence
+    image,
+    segmentation_model,
+    generator_model,
+    yolo_model_path,
+    confidence,
+    image_path,
 ):
     # detect faces in the frame and determine if they are wearing a
     # face mask or not
     (faces, locs) = run_model(
-            weights=yolo_model_path,
-            data="./mask_detection/YOLOv5/data/mask_data.yaml",
-            conf_thres=confidence,
-            img0=image)
+        weights=yolo_model_path,
+        data="./mask_detection/YOLOv5/data/mask_data.yaml",
+        conf_thres=confidence,
+        source=image_path,
+    )
 
     if len(faces) != 0:
         # segment the mask on faces
