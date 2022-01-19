@@ -15,7 +15,7 @@ except:
     print("error")
     raise ValueError("Error while loading models")
 
-from mask_detection.YOLOv5.utils.detect import run_model
+from mask_detection.YOLOv5.utils.detect import run_model # pylint: disable=E0611
 
 
 def load_models(
