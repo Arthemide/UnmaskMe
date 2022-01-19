@@ -15,7 +15,7 @@ except:
     print("error")
     raise ValueError("Error while loading models")
 
-from mask_detection.YOLOv5.utils.detect import run_model # pylint: disable=E0611
+from mask_detection.YOLOv5.utils.detect import run_model  # pylint: disable=E0611
 
 
 def load_models(
@@ -26,7 +26,6 @@ def load_models(
     device,
 ):
     try:
-        print(mask_detector_model_path)
         if mask_detector_model_path == args["mask_detector_model_path"]:
             get_YOLOv5_model()
         if mask_segmentation_model_path == args["mask_segmentation_model_path"]:
