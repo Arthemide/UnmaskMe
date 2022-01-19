@@ -22,19 +22,15 @@ from mask_detection.YOLOv5.utils.detect import run_model
 
 def load_models(
     args,
-    face_detector_path,
     mask_detector_model_path,
     mask_segmentation_model_path,
     ccgan_path,
     device,
 ):
     try:
-        if face_detector_path == args["face_detector_path"]:
-            get_face_detector_model()
-        if face_detector_path == args["face_detector_path"]:
-            get_YOLOv5_model()
+        print(mask_detector_model_path)
         if mask_detector_model_path == args["mask_detector_model_path"]:
-            get_mask_detector_model()
+            get_YOLOv5_model()
         if mask_segmentation_model_path == args["mask_segmentation_model_path"]:
             get_mask_segmentation_model()
         if ccgan_path == args["ccgan_path"]:
@@ -43,28 +39,22 @@ def load_models(
         print("error")
         raise ValueError("Error while loading models")
 
-    maskModel, faceNet = mask_utils.load_models(
-        device, args["face_detector_path"], args["mask_detector_model_path"]
-    )
     segmentation_model = segmentation_utils.load_model(
         device, args["mask_segmentation_model_path"]
     )
     generator_model = gan_utils.load_model(args["ccgan_path"], device)
     print("[INFO] Models loaded")
 
-    return maskModel, faceNet, segmentation_model, generator_model
+    return segmentation_model, generator_model
 
 
 def predict_face(
-    image, faceNet, maskModel, segmentation_model, generator_model, confidence
+    image, segmentation_model, generator_model, yolo_model_path, confidence
 ):
     # detect faces in the frame and determine if they are wearing a
     # face mask or not
-    (faces, locs, preds) = mask_utils.detect_and_predict_mask(
-        image, faceNet, maskModel, confidence
-    )
     (faces, locs) = run_model(
-            weights="./model_weights/mask_face_detector.pt",
+            weights=yolo_model_path,
             data="./mask_detection/YOLOv5/data/mask_data.yaml",
             conf_thres=confidence,
             img0=image)

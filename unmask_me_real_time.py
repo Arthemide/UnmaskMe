@@ -7,22 +7,7 @@ import imutils
 import torch
 from imutils.video import VideoStream
 
-from utils import load_models, predict_face
-
-try:
-    get_face_detector_model()
-    get_mask_detector_model()
-    get_mask_segmentation_model()
-    get_ccgan_model()
-    get_YOLOv5_repo()
-    get_YOLOv5_model()
-except:
-
-    print("error")
-    raise ValueError("Error while loading models")
-
-
-from mask_detection.YOLOv5.utils.detect import run_model
+from unmask_me_utils import load_models, predict_face
 
 if __name__ == "__main__":
     # the computation device

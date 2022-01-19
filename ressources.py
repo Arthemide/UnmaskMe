@@ -79,7 +79,7 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
     return path
 
 
-def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
+def get_YOLOv5_model(path="model_weights/model_mask_detector.pt"):
     """
     Download and extract the YOLOv5 model.
 
