@@ -51,7 +51,8 @@ def predict_face(
     generator_model,
     yolo_model_path,
     confidence,
-    image_path,
+    image_path=None,
+    real_time=False,
 ):
     # detect faces in the frame and determine if they are wearing a
     # face mask or not
@@ -60,6 +61,7 @@ def predict_face(
         data="./mask_detection/YOLOv5/data/mask_data.yaml",
         conf_thres=confidence,
         source=image_path,
+        img0=image if real_time else None,
     )
 
     if len(faces) != 0:

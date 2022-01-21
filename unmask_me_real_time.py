@@ -71,7 +71,7 @@ if __name__ == "__main__":
             generator_model,
             mask_detector_model_path,
             args["confidence"],
-            args["image"],
+            real_time=True,
         )
 
         # show the output frame
