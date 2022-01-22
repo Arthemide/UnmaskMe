@@ -82,6 +82,21 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
     return path
 
 
+def get_YOLOv5_dataset(path="../datasets/yolov5"):
+    """
+    Download and extract the YOLOv5 dataset.
+
+    Returns:
+        str: Path to the extracted YOLOv5 dataset.
+    """
+    if os.path.exists(path):
+        return path
+    os.makedirs(path, exist_ok=True)
+    print("Downloading YOLOv5 dataset...")
+    url = "https://link.eu1.storjshare.io/jvrankoogai762vqn4foajoo4v4a/datasets/yolov5.zip?wrap=0"
+    return dload.save_unzip(url, path, True)
+
+
 def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
     """
     Download and extract the YOLOv5 model.

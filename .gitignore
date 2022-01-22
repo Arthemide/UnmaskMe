@@ -22,5 +22,7 @@ model_weights/
 datasets/celeba
 datasets/dataset
 datasets/mask
+datasets/yolov5
+mask_detection/yolov5s.pt
 MaskTheFace/
 dlib_models/

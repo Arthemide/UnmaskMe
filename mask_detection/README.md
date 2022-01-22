@@ -2,22 +2,28 @@
 
 ## Mask detection on frame
 
-Sources for the ccgan: [here](https://github.com/eriklindernoren/PyTorch-GAN#context-conditional-gan)
-From the paper [Semi-supervised learning with context-conditional generative adversarial networks](https://arxiv.org/pdf/1611.06430.pdf) by Emily Denton, Sam Gross, Rob Fergus.
-
 ### Dataset
 
-You can download the dataset [here](http://mmlab.ie.cuhk.edu.hk/projects/CelebA.html).
-In '**Align&Cropped Images**' Drive download '**Img/img_align_celeba.zip**' and extract it in the a new folder called **data** at the root of the project.
+You can download the dataset [here](https://www.kaggle.com/andrewmvd/face-mask-detection).
+After running '**python pre_process.py**' dataset will be extract in the a new folder called **yolov5** in the **datasets** at the root of the project.
 
-## 🚀&nbsp; Installation
+### 🚀&nbsp; Installation
 
 - Refer to principal README, section installation.
 
-## 🧑🏻‍💻&nbsp; Train
+### 🧑🏻‍💻&nbsp; Train
 
 - To train face mask detection:
 
 ```bash
-python3 train.py --image images/pic1.jpeg
+python pre_process.py
+python YOLOv5/train.py --img 640 --cfg yolov5s.yaml --hyp hyp.scratch.yaml --batch 32 --epochs 100 --data YOLOv5/data/mask_data.yaml --weights yolov5s.pt --workers 24 --name yolo_mask_det
+```
+
+### 🧑🏻‍💻&nbsp; Test
+
+- To test face mask detection on test images:
+
+```bash
+python YOLOv5/detect.py --source image_path --weights yolov5s.pt --conf 0.25 --name yolo_road_det
 ```
