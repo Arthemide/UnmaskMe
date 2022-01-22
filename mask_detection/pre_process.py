@@ -17,6 +17,7 @@ sys.path.append(parentdir)
 
 from ressources import get_YOLOv5_dataset
 
+
 # Function to get the data from XML Annotation
 def extract_info_from_xml(xml_file):
     root = ET.parse(xml_file).getroot()
