@@ -82,7 +82,7 @@ def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
     return path
 
 
-def get_YOLOv5_model(path="model_weights/model_mask_detector.pt"):
+def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
     """
     Download and extract the YOLOv5 model.
 
@@ -93,7 +93,7 @@ def get_YOLOv5_model(path="model_weights/model_mask_detector.pt"):
         return path
     os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
     print("Downloading YOLOv5 model...")
-    url = "https://link.eu1.storjshare.io/juktaddoxro75bg4irc55ewerevq/datasets/model_mask_detector.pth?wrap=0"
+    url = "https://link.eu1.storjshare.io/s/jwqmbuztmtpkoachps4qydrtq2ca/datasets/mask_face_detector.pt?wrap=0"
     return dload.save(url, path)
 
 
