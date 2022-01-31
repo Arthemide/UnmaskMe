@@ -9,22 +9,18 @@
 
 ## Demo
 
-<!-- <p align="center">
-    <img alt="Walkthrough" src='https://user-images.githubusercontent.com/39765499/58358323-52afbb80-7e76-11e9-87f6-af65bae7ca34.gif'>
-
-<img width="1112" alt="Screenshot 2019-05-24 at 22 38 30" src="https://user-images.githubusercontent.com/39765499/58357975-d49ee500-7e74-11e9-939d-d7ac314c11f4.png">
-
-</p> -->
+[Live Demo](https://github.com/Arthemide/UnmaskMe/blob/add-demo/images/Demo.gif)
 
 ## Features
 
 - [x] Mask detection
 - [x] Mask segmentation
 - [x] CCGan to predict face
+- [x] YOLO for mask detection
 
 ## Future Improvements
 
-- [] YOLO for mask detection
+- [] Better mask segmentation
 - [] StyleGan implementation
 
 ## ♻️&nbsp; Environment
