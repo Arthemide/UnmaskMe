@@ -83,11 +83,12 @@ UnmaskMe webapp using Pytorch & Streamlit
 python3 -m streamlit run app.py
 ```
 
-## Link to the sub README's
+## Link to the sub README's and report
 
 - [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_detection/README.md)
 - [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
 - [CCGan](https://github.com/Arthemide/UnmaskMe/blob/dev/ccgan/README.md)
+- [Report](https://github.com/Arthemide/UnmaskMe/tree/add-demo/images/report.pdf)
 
 <!-- ## 📖&nbsp; References
 
