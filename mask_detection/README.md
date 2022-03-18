@@ -5,7 +5,7 @@
 ### Dataset
 
 You can download the dataset [here](https://www.kaggle.com/andrewmvd/face-mask-detection).
-After running '**python pre_process.py**' dataset will be extract in the a new folder called **yolov5** in the **datasets** at the root of the project.
+After running '**python pre_process.py**' dataset will be extracted in the a new folder **datasets/yolov5** at the root of the project.
 
 ### 🚀&nbsp; Installation
 
