@@ -88,7 +88,7 @@ python3 -m streamlit run app.py
 - [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_detection/README.md)
 - [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
 - [CCGan](https://github.com/Arthemide/UnmaskMe/blob/dev/ccgan/README.md)
-- [Report](https://github.com/Arthemide/UnmaskMe/tree/add-demo/images/report.pdf)
+- [Report](https://github.com/Arthemide/UnmaskMe/images/report.pdf)
 
 <!-- ## 📖&nbsp; References
 

@@ -1,4 +1,5 @@
 import dload
+import subprocess
 import os
 
 
@@ -47,7 +48,7 @@ def get_masks_samples(path="datasets/mask"):
     return dload.save_unzip(url, "/".join(path.split("/")[:-1]), True)
 
 
-def get_MaskTheFace(path="MaskTheFace"):
+def get_MaskTheFace(path="MaskTheFace/"):
     """
     Download and extract the MaskTheFace dataset.
 
@@ -60,6 +61,55 @@ def get_MaskTheFace(path="MaskTheFace"):
     print("Cloning MaskTheFace...")
     url = "https://github.com/aqeelanwar/MaskTheFace.git"
     return dload.git_clone(url, path)
+
+
+def get_YOLOv5_repo(path="mask_detection/YOLOv5"):
+    """
+    Download and extract the YOLOv5 repository.
+
+    Returns:
+        str: Path to the extracted YOLOv5 repository.
+    """
+    if os.path.exists(path):
+        return path
+    print("Cloning YOLOv5...")
+    cloneCommand = f"git clone -b adapt-yolo-to-unmask  https://github.com/Arthemide/yolov5.git {path}"
+    cloneProcess = subprocess.Popen(cloneCommand.split(), stdout=subprocess.PIPE)
+    cloneProcess.wait()
+    requCommand = "pip install -r mask_detection/YOLOv5/requirements.txt"
+    requProcess = subprocess.Popen(requCommand.split(), stdout=subprocess.PIPE)
+    requProcess.wait()
+    return path
+
+
+def get_YOLOv5_dataset(path="../datasets/yolov5"):
+    """
+    Download and extract the YOLOv5 dataset.
+
+    Returns:
+        str: Path to the extracted YOLOv5 dataset.
+    """
+    if os.path.exists(path):
+        return path
+    os.makedirs(path, exist_ok=True)
+    print("Downloading YOLOv5 dataset...")
+    url = "https://link.eu1.storjshare.io/jvrankoogai762vqn4foajoo4v4a/datasets/yolov5.zip?wrap=0"
+    return dload.save_unzip(url, path, True)
+
+
+def get_YOLOv5_model(path="model_weights/mask_face_detector.pt"):
+    """
+    Download and extract the YOLOv5 model.
+
+    Returns:
+        str: Path to the extracted YOLOv5 model.
+    """
+    if os.path.exists(path):
+        return path
+    os.makedirs("/".join(path.split("/")[:-1]), exist_ok=True)
+    print("Downloading YOLOv5 model...")
+    url = "https://link.eu1.storjshare.io/s/jwqmbuztmtpkoachps4qydrtq2ca/datasets/mask_face_detector.pt?wrap=0"
+    return dload.save(url, path)
 
 
 def get_face_detector_model(path="model_weights/face_detector"):
