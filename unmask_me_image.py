@@ -4,15 +4,14 @@ import argparse
 import cv2
 import torch
 
-from utils import load_models, predict_face
+from unmask_me_utils import load_models, predict_face
 
 if __name__ == "__main__":
     # the computation device
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("[INFO] Device set to:", device)
 
-    face_detector_path = "model_weights/face_detector"
-    mask_detector_model_path = "model_weights/mask_detector_model.pth"
+    mask_detector_model_path = "model_weights/mask_face_detector.pt"
     mask_segmentation_model_path = "model_weights/model_mask_segmentation.pth"
     ccgan_path = "model_weights/ccgan-110.pth"
 
@@ -24,14 +23,8 @@ if __name__ == "__main__":
         "-c",
         "--confidence",
         type=float,
-        default=0.5,
+        default=0.75,
         help="minimum probability to filter weak detections",
-    )
-    ap.add_argument(
-        "--face_detector_path",
-        type=str,
-        default=face_detector_path,
-        help="Path to face detector model",
     )
     ap.add_argument(
         "--mask_detector_model_path",
@@ -50,9 +43,8 @@ if __name__ == "__main__":
     )
     args = vars(ap.parse_args())
 
-    maskModel, faceNet, segmentation_model, generator_model = load_models(
+    segmentation_model, generator_model = load_models(
         args,
-        face_detector_path,
         mask_detector_model_path,
         mask_segmentation_model_path,
         ccgan_path,
@@ -63,13 +55,14 @@ if __name__ == "__main__":
     if image is not None:
         predict_face(
             image,
-            faceNet,
-            maskModel,
             segmentation_model,
             generator_model,
+            mask_detector_model_path,
             args["confidence"],
+            args["image"],
         )
         # show the output image
+        print("[INFO] Job done, showing image")
         cv2.imshow("Output", image)
         cv2.waitKey(0)
     else:
