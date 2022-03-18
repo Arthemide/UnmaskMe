@@ -85,10 +85,10 @@ python3 -m streamlit run app.py
 
 ## Link to the sub README's and report
 
-- [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_detection/README.md)
-- [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/dev/mask_segmentation/README.md)
-- [CCGan](https://github.com/Arthemide/UnmaskMe/blob/dev/ccgan/README.md)
-- [Report](https://github.com/Arthemide/UnmaskMe/images/report.pdf)
+- [Mask detection](https://github.com/Arthemide/UnmaskMe/blob/master/mask_detection/README.md)
+- [Mask segmentation](https://github.com/Arthemide/UnmaskMe/blob/master/mask_segmentation/README.md)
+- [CCGan](https://github.com/Arthemide/UnmaskMe/blob/master/ccgan/README.md)
+- [Report](https://github.com/Arthemide/UnmaskMe/blob/master/documentation/report.pdf)
 
 <!-- ## 📖&nbsp; References
 
